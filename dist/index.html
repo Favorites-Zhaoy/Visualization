@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="description" content="从信息结构到响应式界面：中英双语、案例驱动的页面布局课程。">
+  <title>第 6 章 · 页面布局 | Chapter 6 · Page Layout</title>
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%23121d33'/%3E%3Cpath d='M7 8h18v5H7zm0 8h8v8H7zm11 0h7v8h-7z' fill='%237ee0c3'/%3E%3C/svg%3E">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand" href="#top"><span>06</span><strong data-t="course">页面布局</strong></a>
+    <div class="top-actions">
+      <span class="case-count" id="caseCount">CASE 01 / 07</span>
+      <button class="xray-btn" id="xrayBtn" aria-pressed="false">⌗ <span data-t="xray">布局透视</span></button>
+      <div class="lang" aria-label="Language"><button data-lang="zh" class="active">中</button><button data-lang="en">EN</button></div>
+    </div>
+  </header>
+
+  <div class="course-shell" id="top">
+    <aside class="sidebar">
+      <p class="eyebrow">CHAPTER 06</p>
+      <h1 data-t="title">从信息结构到响应式界面</h1>
+      <p class="lead" data-t="lead">好的布局不是把元素放到正确的位置，而是在内容、屏幕和用户条件改变时，仍保持清晰的视觉关系。</p>
+      <nav id="lessonNav" aria-label="Course lessons"></nav>
+      <div class="progress-wrap"><div><span data-t="progress">课程进度</span><b id="progressText">14%</b></div><div class="progress"><i id="progressBar"></i></div></div>
+    </aside>
+
+    <main class="lesson-area">
+      <section class="case-hero">
+        <div><p class="eyebrow" id="caseLabel">CASE 01 · DIAGNOSE</p><h2 id="lessonTitle"></h2><p id="lessonQuestion"></p></div>
+        <div class="outcome"><small data-t="outcome">本节结论</small><strong id="lessonOutcome"></strong></div>
+      </section>
+
+      <div class="tabs" role="tablist">
+        <button role="tab" data-tab="explain" class="active">📖 <span data-t="explain">讲解</span></button>
+        <button role="tab" data-tab="code">⌨ <span data-t="code">关键代码</span></button>
+        <button role="tab" data-tab="demo">▶ <span data-t="demo">动态演示</span></button>
+      </div>
+      <section class="panel" id="panel" aria-live="polite"></section>
+      <footer class="lesson-footer"><button id="prevBtn">← <span data-t="prev">上一节</span></button><span id="footerCase"></span><button id="nextBtn"><span data-t="next">下一节</span> →</button></footer>
+    </main>
+  </div>
+
+  <template id="campusTemplate">
+    <div class="browser-demo campus"><div class="browser-bar"><i></i><i></i><i></i><span>campushub.edu</span></div><div class="campus-ui"><header><b>CampusHub</b><nav>Discover　Clubs　Events</nav><button>Sign in</button></header><div class="campus-grid"><main><p class="kicker">THIS WEEK</p><h3>Make campus feel smaller.</h3><div class="event-grid"><article>🎨<b>Design Night</b><small>Studio A · 19:00</small></article><article>🎸<b>Open Stage</b><small>South Lawn · 18:30</small></article><article>🌱<b>Green Market</b><small>Library Walk · 12:00</small></article></div></main><aside><b>Popular now</b><p>01 Film Society</p><p>02 Night Run</p></aside></div></div></div>
+  </template>
+  <script src="app.js"></script>
+</body>
+</html>
