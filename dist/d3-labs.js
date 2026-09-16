@@ -6,7 +6,7 @@
     return;
   }
 
-  const state = { treeChoice: null, treeStage: 'start', cqTarget: 'main' };
+  const state = { cqTarget: 'main', xray: false };
   const isEnglish = () => document.documentElement.lang === 'en';
   const t = (zh, en) => isEnglish() ? en : zh;
 
@@ -88,80 +88,29 @@
   }
   d3.selectAll('#gridColumns,#gridMin,#gridGap,#gridAuto').on('input.d3-lab change.d3-lab', updateGrid);
 
-  const treeData = {
-    id: 'root', zh: '需要二维对齐？', en: 'Two-axis alignment?', children: [
-      { id: 'grid', zh: 'CSS Grid', en: 'CSS Grid' },
-      { id: 'q2', zh: '主要沿一个方向？', en: 'Mainly one direction?', children: [
-        { id: 'flex', zh: 'Flexbox', en: 'Flexbox' },
-        { id: 'flow', zh: 'Normal Flow', en: 'Normal Flow' }
-      ] }
-    ]
-  };
-  const treeText = {
-    grid: ['CSS Grid', '需要同时对齐行与列，这是二维关系。', 'Rows and columns must align together, so this is a two-dimensional relationship.'],
-    flex: ['Flexbox', '元素主要沿一条轴协作，使用一维布局模型。', 'The elements cooperate mainly along one axis, so use a one-dimensional model.'],
-    flow: ['Normal Flow', '不需要额外坐标关系，让文档自然顺序完成布局。', 'No extra coordinate relationship is needed; let document order perform the layout.']
-  };
-  const treeSvg = d3.select('.decision-tree').insert('svg', '.tree-result')
-    .attr('class', 'decision-map')
-    .attr('viewBox', '0 0 560 210')
-    .attr('role', 'img')
-    .attr('aria-label', 'Layout decision tree');
-
-  function renderTree() {
-    const root = d3.hierarchy(treeData);
-    d3.tree().size([170, 430])(root);
-    const active = new Set(['root']);
-    if (state.treeStage === 'second' || state.treeChoice === 'flex' || state.treeChoice === 'flow') active.add('q2');
-    if (state.treeChoice) active.add(state.treeChoice);
-
-    treeSvg.selectAll('path.tree-link')
-      .data(root.links(), d => d.target.data.id)
-      .join('path')
-      .attr('class', d => `tree-link${active.has(d.target.data.id) ? ' active' : ''}`)
-      .attr('d', d3.linkHorizontal().x(d => d.y + 60).y(d => d.x + 18));
-
-    const nodes = treeSvg.selectAll('g.tree-map-node')
-      .data(root.descendants(), d => d.data.id)
-      .join(enter => {
-        const group = enter.append('g').attr('class', 'tree-map-node');
-        group.append('circle').attr('r', 7);
-        group.append('text').attr('x', 13).attr('dy', '0.35em');
-        return group;
-      })
-      .attr('class', d => `tree-map-node${active.has(d.data.id) ? ' active' : ''}`)
-      .attr('transform', d => `translate(${d.y + 60},${d.x + 18})`);
-    nodes.select('text').text(d => isEnglish() ? d.data.en : d.data.zh);
+  function updateResponsive() {
+    const requested = +d3.select('#responsiveWidth').property('value');
+    const mode = d3.select('#responsiveMode').property('value');
+    const effective = mode === 'fixed' ? 920 : requested;
+    const compact = effective < 720;
+    const cardColumns = effective < 520 ? 1 : effective < 850 ? 2 : 3;
+    const browser = d3.select('#responsiveBrowser')
+      .style('width', `${effective}px`)
+      .classed('xray', state.xray);
+    browser.select('.main-layout').style('grid-template-columns', compact ? '1fr' : 'minmax(0, 1fr) 180px');
+    browser.select('.cards').style('grid-template-columns', `repeat(${cardColumns}, minmax(0, 1fr))`);
+    d3.select('#responsiveWidthValue').text(`${requested} px`);
+    d3.select('#responsiveState').text(compact
+      ? t('单列 · 侧栏下移', 'Single column · sidebar below')
+      : t('主内容 + 侧栏', 'Main + Sidebar'));
+    d3.select('#responsiveMeasure').text(`${state.xray ? '12-column X-Ray · ' : ''}${cardColumns} ${t('列卡片', 'card columns')} · gap 18px`);
+    d3.select('#responsiveCode').text(compact
+      ? '@media (max-width: 45rem) { grid-template-columns: 1fr; }'
+      : 'grid-template-columns: minmax(0, 1fr) 180px;');
+    d3.select('#xrayToggle').attr('aria-pressed', state.xray).classed('active', state.xray);
   }
-
-  function showTreeResult(key) {
-    state.treeChoice = key;
-    state.treeStage = key === 'grid' ? 'start' : 'second';
-    if (key === 'grid') d3.select('#treeStep2').classed('hidden', true);
-    const data = treeText[key];
-    d3.select('#treeResult strong').text(data[0]);
-    d3.select('#treeResult p').text(isEnglish() ? data[2] : data[1]);
-    renderTree();
-  }
-  d3.selectAll('[data-tree]').on('click.d3-lab', function () {
-    const action = this.dataset.tree;
-    if (action === 'next') {
-      state.treeStage = 'second';
-      state.treeChoice = null;
-      d3.select('#treeStep2').classed('hidden', false);
-      d3.select('#treeResult strong').text('—');
-      d3.select('#treeResult p').text(t('继续回答第二个问题。', 'Continue with the second question.'));
-      renderTree();
-    } else showTreeResult(action);
-  });
-  d3.select('#treeReset').on('click.d3-lab', () => {
-    state.treeStage = 'start';
-    state.treeChoice = null;
-    d3.select('#treeStep2').classed('hidden', true);
-    d3.select('#treeResult strong').text('—');
-    d3.select('#treeResult p').text(t('从第一个问题开始。', 'Begin with the first question.'));
-    renderTree();
-  });
+  d3.selectAll('#responsiveWidth,#responsiveMode').on('input.d3-lab change.d3-lab', updateResponsive);
+  d3.select('#xrayToggle').on('click.d3-lab', () => { state.xray = !state.xray; updateResponsive(); });
 
   const compareScale = d3.scaleLinear().domain([0, 100]);
   function setCompare(value) {
@@ -214,9 +163,10 @@
   function refreshLanguage() {
     updateFlex();
     updateGrid();
-    renderTree();
-    if (state.treeChoice) showTreeResult(state.treeChoice);
-    else if (state.treeStage === 'second') d3.select('#treeResult p').text(t('继续回答第二个问题。', 'Continue with the second question.'));
+    d3.select('#responsiveTitle').text(t('响应式视口：让内容决定断点', 'Responsive viewport: let content determine the breakpoint'));
+    d3.select('#responsiveIntro').text(t('拖动视口，观察卡片列数、主内容与侧栏关系何时失效。开启透视后可查看 12 列网格、容器边界、gap 和对齐线。', 'Drag the viewport to find where card columns and the main–sidebar relationship fail. X-Ray reveals the 12-column grid, boundaries, gaps, and alignment lines.'));
+    d3.select('#xrayLabel').text(t('布局透视', 'Layout X-Ray'));
+    updateResponsive();
     updateContainerQuery();
   }
 
@@ -225,7 +175,7 @@
   new ResizeObserver(updateContainerState).observe(document.querySelector('#cqSide'));
   updateFlex();
   updateGrid();
-  renderTree();
+  refreshLanguage();
   setCompare(50);
   updateContainerQuery();
 })();

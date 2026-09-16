@@ -61,39 +61,19 @@
           <section class="intro-grid"><div><h3 data-i18n="problemTitle">案例问题：为什么 CampusHub 看起来很乱？</h3><p data-i18n="problemBody">固定宽度、任意边距和绝对定位只在一张截图中“成立”。内容变长或屏幕缩小时，导航拥挤、卡片错位，侧栏还会打断阅读顺序。</p></div><div class="bad-preview"><b>BAD LAYOUT</b><div class="bad-nav">LOGO　首页　活动　　　　　　　　登录</div><div class="bad-cards">活动 1　活动 2　活动 3　活动 4</div><i></i></div></section>
           <h3 data-i18n="methodTitle">用“关系”而不是“属性”思考</h3>
           <div class="logic"><span data-i18n="symptom">现象</span><i>→</i><span data-i18n="issue">问题</span><i>→</i><span data-i18n="principle">原理</span><i>→</i><span data-i18n="decision">决策</span><i>→</i><span data-i18n="result">结果</span></div>
-          <div class="knowledge-grid">
-            <article><b>01 · Normal Flow</b><p data-i18n="k1">先建立有意义的文档与阅读顺序，让内容增长时自然推开后续元素。</p></article>
-            <article><b>02 · Flexbox</b><p data-i18n="k2">当关系主要发生在一个方向时，用一维模型管理分配与对齐。</p></article>
-            <article><b>03 · CSS Grid</b><p data-i18n="k3">当内容需要共享行与列时，用二维坐标系建立整体结构。</p></article>
-            <article><b>04 · Spacing System</b><p data-i18n="k4">让组内距离小于组间距离，以稳定尺度表达亲疏和节奏。</p></article>
-            <article><b>05 · Responsive</b><p data-i18n="k5">先用流动和内在布局，只在内容关系破裂处设置断点。</p></article>
-            <article><b>06 · Accessibility</b><p data-i18n="k6">让视觉顺序、阅读顺序与键盘焦点顺序保持一致。</p></article>
-          </div>
+          <section class="theory-course" aria-labelledby="theoryCourseTitle">
+            <div class="theory-course-head"><div><small>LESSON 01–06</small><h3 id="theoryCourseTitle">页面布局完整学习路径</h3></div><span id="theoryProgress">01 / 06</span></div>
+            <nav class="theory-module-nav" id="theoryModuleNav" aria-label="页面布局课程"></nav>
+            <article class="theory-module" id="theoryLessonContent" aria-live="polite"></article>
+          </section>
+          <aside class="accessibility-check"><b id="accessibilityNoteTitle">布局验收底线</b><p id="accessibilityNoteBody">DOM 源顺序、视觉阅读顺序与键盘焦点顺序应保持一致；缩放、长文本和内容增长时，布局仍应可读、可操作。</p><span>DOM → VISUAL → FOCUS → ZOOM</span></aside>
           <aside class="note blue"><b data-i18n="judge">布局判断：</b> <span data-i18n="judgeBody">自然阅读用 Normal Flow；一个方向用 Flexbox；两个方向用 Grid；脱离文档关系才考虑 Position。</span></aside>
         </div>
 
         <div class="tab-panel hidden" id="codePanel">
-          <div class="code-grid"><div class="codebox"><button id="copyCode" data-i18n="copy">复制代码</button><pre><code>.page {
-  width: min(72rem, 100% - 2rem);
-  margin-inline: auto;
-}
-
-.site-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 1.5rem;
-}
-
-.main-layout {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) 18rem;
-  gap: 2rem;
-}
-
-@media (max-width: 45rem) {
-  .main-layout { grid-template-columns: 1fr; }
-}</code></pre></div><div class="code-notes"><article><code>min()</code><p data-i18n="c1">同时设置舒适上限和流动宽度。</p></article><article><code>gap</code><p data-i18n="c2">把间距定义成容器规则，而不是分散的 margin。</p></article><article><code>minmax(0, 1fr)</code><p data-i18n="c3">允许主内容轨道真正收缩，避免长内容撑破布局。</p></article><article><code>45rem</code><p data-i18n="c4">断点来自内容关系开始失效的位置。</p></article><button class="run" id="runDemo">▶ <span data-i18n="run">在演示中运行</span></button></div></div>
+          <div class="module-code-label"><small>ACTIVE LESSON</small><b id="codeLessonTitle">6.1 诊断布局</b></div>
+          <div class="code-grid"><div class="codebox"><button id="copyCode" data-i18n="copy">复制代码</button><pre><code id="lessonCode"></code></pre></div><div class="code-notes" id="lessonNotes"></div></div>
+          <button class="run" id="runDemo">▶ <span data-i18n="run">在演示中运行</span></button>
         </div>
 
         <div class="tab-panel hidden" id="demoPanel">
@@ -101,7 +81,7 @@
           <div class="lab-switcher" role="tablist" aria-label="Layout experiments">
             <button class="active" data-lab="flex" role="tab"><span>01</span><b>Flexbox</b></button>
             <button data-lab="grid" role="tab"><span>02</span><b>Grid</b></button>
-            <button data-lab="decision" role="tab"><span>03</span><b data-i18n="decisionLab">决策树</b></button>
+            <button data-lab="responsive" role="tab"><span>03</span><b>Responsive + X-Ray</b></button>
             <button data-lab="compare" role="tab"><span>04</span><b>Before / After</b></button>
             <button data-lab="container" role="tab"><span>05</span><b>Container Query</b></button>
           </div>
@@ -131,14 +111,15 @@
             <div class="lab-rule"><b data-i18n="activeRule">当前规则</b><span id="gridInsight"></span><code id="gridCode"></code></div>
           </section>
 
-          <section class="lab-panel hidden" data-lab-panel="decision">
-            <div class="lab-copy"><h4 data-i18n="treeTitle">布局决策树：先判断关系，再选择工具</h4><p data-i18n="treeIntro">回答最多两个问题。推荐结果会说明原因，而不只是判断“对或错”。</p></div>
-            <div class="decision-tree">
-              <div class="tree-node" id="treeStep1"><span>01</span><h5 data-i18n="treeQ1">内容是否需要同时按行和列对齐？</h5><div><button data-tree="grid" data-i18n="yes">是</button><button data-tree="next" data-i18n="no">否</button></div></div>
-              <div class="tree-node hidden" id="treeStep2"><span>02</span><h5 data-i18n="treeQ2">多个元素是否主要沿一个方向协作？</h5><div><button data-tree="flex" data-i18n="yes">是</button><button data-tree="flow" data-i18n="no">否</button></div></div>
-              <div class="tree-result" id="treeResult" aria-live="polite"><small data-i18n="recommendation">推荐方案</small><strong>—</strong><p data-i18n="treeWaiting">从第一个问题开始。</p></div>
+          <section class="lab-panel hidden" data-lab-panel="responsive">
+            <div class="lab-copy"><h4 id="responsiveTitle">响应式视口：让内容决定断点</h4><p id="responsiveIntro">拖动视口，观察卡片列数、主内容与侧栏关系何时失效。开启透视后可查看 12 列网格、容器边界、gap 和对齐线。</p></div>
+            <div class="control-grid responsive-controls">
+              <label class="wide"><span>Viewport</span><input id="responsiveWidth" type="range" min="320" max="1100" value="920"><b id="responsiveWidthValue">920 px</b></label>
+              <label><span>Layout strategy</span><select id="responsiveMode"><option value="fluid">Fluid</option><option value="fixed">Fixed 920px</option></select></label>
+              <button class="xray-toggle" id="xrayToggle" aria-pressed="false">⌗ <span id="xrayLabel">布局透视</span></button>
             </div>
-            <button class="reset-btn" id="treeReset">↺ <span data-i18n="restart">重新判断</span></button>
+            <div class="responsive-stage"><div class="browser responsive-browser" id="responsiveBrowser"><div class="browserbar"><i></i><i></i><i></i><span>campushub.edu</span></div><div class="campus"><div class="xray-grid" aria-hidden="true"></div><header data-region="Header"><b>CampusHub</b><nav data-i18n="campusNav">发现　社团　活动</nav><button data-i18n="signin">登录</button></header><div class="main-layout"><main data-region="Main Content"><small data-i18n="week">本周精选</small><h3 data-i18n="campusTitle">让校园因连接而更亲近。</h3><div class="cards" data-region="Card Grid"><article>🎨<b data-i18n="event1">设计之夜</b><small>19:00</small></article><article>🎸<b data-i18n="event2">开放舞台</b><small>18:30</small></article><article>🌱<b data-i18n="event3">绿色市集</b><small>12:00</small></article></div></main><aside data-region="Sidebar"><b data-i18n="popular">热门活动</b><p>01 Film Society</p><p>02 Night Run</p></aside></div></div></div></div>
+            <div class="xray-readout"><span><b id="responsiveState">Main + Sidebar</b><small id="responsiveMeasure">12 columns · gap 18px</small></span><code id="responsiveCode">grid-template-columns: minmax(0, 1fr) 180px;</code></div>
           </section>
 
           <section class="lab-panel hidden" data-lab-panel="compare">
@@ -165,6 +146,7 @@
   </div>
   <script src="vendor/d3.v7.9.0.min.js"></script>
   <script src="app.js"></script>
+  <script src="lesson6-content.js"></script>
   <script src="d3-labs.js"></script>
 </body>
 </html>
