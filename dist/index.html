@@ -136,7 +136,7 @@
             <div class="decision-tree">
               <div class="tree-node" id="treeStep1"><span>01</span><h5 data-i18n="treeQ1">内容是否需要同时按行和列对齐？</h5><div><button data-tree="grid" data-i18n="yes">是</button><button data-tree="next" data-i18n="no">否</button></div></div>
               <div class="tree-node hidden" id="treeStep2"><span>02</span><h5 data-i18n="treeQ2">多个元素是否主要沿一个方向协作？</h5><div><button data-tree="flex" data-i18n="yes">是</button><button data-tree="flow" data-i18n="no">否</button></div></div>
-              <div class="tree-result" id="treeResult"><small data-i18n="recommendation">推荐方案</small><strong>—</strong><p data-i18n="treeWaiting">从第一个问题开始。</p></div>
+              <div class="tree-result" id="treeResult" aria-live="polite"><small data-i18n="recommendation">推荐方案</small><strong>—</strong><p data-i18n="treeWaiting">从第一个问题开始。</p></div>
             </div>
             <button class="reset-btn" id="treeReset">↺ <span data-i18n="restart">重新判断</span></button>
           </section>
@@ -163,6 +163,8 @@
       </section>
     </main>
   </div>
+  <script src="vendor/d3.v7.9.0.min.js"></script>
   <script src="app.js"></script>
+  <script src="d3-labs.js"></script>
 </body>
 </html>
