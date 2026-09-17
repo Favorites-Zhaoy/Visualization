@@ -23,9 +23,11 @@ function range(host,zh,en,min,max,value,callback) {
 function buildLesson(lesson,data,snippets) {
   const section=element('section','lesson-section section-wrap',document.querySelector('#lessons')); section.id=`lesson${lesson.id}`;
   const heading=element('header','lesson-heading',section);
-  element('span','lesson-number',heading).textContent=`6.${lesson.id[1]}`;
-  const titleWrap=element('div','lesson-title',heading); element('span','eyebrow',titleWrap).textContent=lesson.word;
-  const title=element('h2','',titleWrap),intro=element('p','',heading);watchLanguage(()=>{title.textContent=translated(lesson.title);intro.textContent=translated(lesson.intro);});
+  const chapterTitle=element('h2','lesson-chapter-title',heading);
+  element('span','lesson-number',chapterTitle).textContent=`6.${lesson.id[1]}`;
+  label(element('span','lesson-topic',chapterTitle),['结构','位置','层级','聚焦','重排'][Number(lesson.id[1])-1],lesson.word[0]+lesson.word.slice(1).toLowerCase());
+  const titleWrap=element('div','lesson-title',heading);
+  const title=element('p','lesson-subtitle',titleWrap),intro=element('p','',heading);watchLanguage(()=>{title.textContent=translated(lesson.title);intro.textContent=translated(lesson.intro);});
   const question=element('p','lesson-question',section);watchLanguage(()=>question.textContent=translated(lesson.question));
   const tabs=element('div','lesson-tabs',section);tabs.setAttribute('role','tablist');watchLanguage(()=>tabs.setAttribute('aria-label',translated(lesson.title)));
   const panels=[]; const tabButtons=[];
@@ -35,7 +37,9 @@ function buildLesson(lesson,data,snippets) {
     b.onkeydown=e=>{let index=i;if(e.key==='ArrowRight')index=(i+1)%3;else if(e.key==='ArrowLeft')index=(i+2)%3;else if(e.key==='Home')index=0;else if(e.key==='End')index=2;else return;e.preventDefault();activate(index);tabButtons[index].focus();};
   });
   function activate(index){tabButtons.forEach((b,i)=>{b.setAttribute('aria-selected',String(i===index));b.tabIndex=i===index?0:-1;panels[i].hidden=i!==index;});}
-  activate(2);
+  activate(0);
+  document.querySelectorAll(`a[href="#${section.id}"]`).forEach(link=>link.addEventListener('click',()=>activate(0)));
+  window.addEventListener('hashchange',()=>{if(location.hash===`#${section.id}`)activate(0);});
   const examples=element('div','example-grid',panels[0]);
   lesson.examples.forEach((ex,i)=>{const article=element('article','example',examples);element('span','eyebrow',article).textContent=`0${i+1}`;const h=element('h3','',article),p=element('p','',article);watchLanguage(()=>{h.textContent=translated(ex.title);p.textContent=translated(ex.text);});});
   const codeToolbar=element('div','code-toolbar',panels[1]);label(element('span','',codeToolbar),'D3 决策 → CSS 排版','D3 decisions → CSS layout');
