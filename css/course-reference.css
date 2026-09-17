@@ -34,3 +34,6 @@
 .lesson-heading{display:block}.lesson-chapter-title{display:flex;align-items:baseline;gap:20px;margin:0 0 18px;font-size:clamp(34px,4vw,52px);font-weight:650;line-height:1.2;letter-spacing:-1px;color:#23493e}.lesson-chapter-title .lesson-number,.lesson-chapter-title .lesson-topic{font:inherit;letter-spacing:inherit;line-height:inherit;color:inherit}.lesson-chapter-title .lesson-number{color:#7b8f68}.lesson-title .lesson-subtitle{font-size:26px;font-weight:550;line-height:1.5;margin:0 0 14px;color:#23493e}.lesson-heading>p{margin:0;max-width:900px}.lesson-question{padding-left:0}
 @media(max-width:760px){.lesson-chapter-title{font-size:34px;gap:14px;margin-bottom:14px}.lesson-title .lesson-subtitle{font-size:21px}}
 @media(max-width:370px){.lesson-chapter-title{font-size:30px;gap:12px}.lesson-title .lesson-subtitle{font-size:19px}}
+
+/* Keep selected summary rows legible against their pale highlight. */
+.week-load .week-bar.is-selected,.week-courses .week-bar.is-selected{color:#174f43;background:#e4edb8;border-color:#315f55;font-weight:650}.week-load .week-bar.is-selected .week-bar-label,.week-load .week-bar.is-selected .week-bar-value,.week-courses .week-bar.is-selected .week-bar-label,.week-courses .week-bar.is-selected .week-bar-value{color:#174f43}
