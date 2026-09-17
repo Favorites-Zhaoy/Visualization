@@ -1,0 +1,142 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <meta
+      name="description"
+      content="Lesson 06 网页页面布局：用80条虚构新生数据学习页面骨架、网格、D3 Treemap、多视图联动和响应式叙事。"
+    />
+    <title>Lesson 06 · 网页页面布局 | CampusScope</title>
+    <link rel="icon" href="favicon.svg" type="image/svg+xml" />
+    <link rel="stylesheet" href="css/style.css" />
+    <script defer src="vendor/d3.v7.min.js"></script>
+    <script type="module" src="js/main.js"></script>
+  </head>
+  <body>
+    <a class="skip-link" href="#lesson61">跳到课程正文</a>
+    <header class="topbar">
+      <a class="brand" href="#home"
+        ><span class="brand-icon">▦</span><strong>可视化导论</strong
+        ><span class="brand-divider"></span><span>LESSON 06</span></a
+      >
+      <nav aria-label="本章导航">
+        <a href="#lesson61">6.1 页面骨架</a><a href="#lesson62">6.2 网格布局</a
+        ><a href="#lesson63">6.3 数据驱动</a><a href="#lesson64">6.4 多视图</a
+        ><a href="#lesson65">6.5 响应式叙事</a
+        ><a class="final-link" href="#final">Final Demo ↗</a>
+      </nav>
+    </header>
+    <main id="home">
+      <section class="hero wrap">
+        <div class="hero-copy">
+          <p class="eyebrow">LESSON 06 / VISUALIZATION LAYOUT</p>
+          <h1>网页页面布局<span>让信息，各就其位。</span></h1>
+          <p class="hero-lead">
+            从一张图，到一个会组织信息的可视化网页。<br />用同一份新生数据，亲手完成五次布局进化。
+          </p>
+          <div class="hero-actions">
+            <a class="button primary" href="#lesson61"
+              >开始布局实验 <span>→</span></a
+            ><a class="text-link" href="#final">先看最终作品 ↗</a>
+          </div>
+          <p class="hero-meta">
+            D3.js v7 <span>×</span> CSS Grid <span>×</span> 80 条虚构数据
+          </p>
+        </div>
+        <div class="hero-lab">
+          <div class="lab-top">
+            <span><i></i> CAMPUSSCOPE / 布局实验台</span><span>01 → 05</span>
+          </div>
+          <div class="hero-stage" id="hero-stage">
+            <div class="stage-title">
+              <strong>2026 新生数据观察站</strong
+              ><span>同一份数据 · 不同的阅读体验</span>
+            </div>
+            <div id="hero-kpis" class="hero-kpis"></div>
+            <div id="hero-viz"></div>
+            <div class="hero-foot">
+              <span id="hero-caption">面积映射人数，差异一眼可见</span
+              ><button id="hero-toggle" aria-pressed="true">
+                切换为等宽网格 ⇄
+              </button>
+            </div>
+          </div>
+          <div class="lab-note">
+            <span class="note-index">试一试</span>
+            不是换一套数据，而是换一种组织方式。
+          </div>
+        </div>
+      </section>
+      <div class="journey-band">
+        <div class="wrap journey" aria-label="学习主线">
+          <span class="journey-start">80 行 CSV</span
+          ><a href="#lesson61"><b>01</b> 页面骨架</a><span>→</span
+          ><a href="#lesson62"><b>02</b> 规则网格</a><span>→</span
+          ><a href="#lesson63"><b>03</b> 数据驱动</a><span>→</span
+          ><a href="#lesson64"><b>04</b> 多视图联动</a><span>→</span
+          ><a href="#lesson65"><b>05</b> 响应式叙事</a>
+        </div>
+      </div>
+      <section class="wrap curriculum">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">ONE DATASET, FIVE TRANSFORMATIONS</p>
+            <h2>一个观察站，五次进化</h2>
+          </div>
+          <p>
+            每节都有 <b>讲解 / 关键代码 / Demo</b><br />先看问题，再动手改变它。
+          </p>
+        </div>
+        <div id="knowledge-cards" class="knowledge-cards"></div>
+      </section>
+      <div class="wrap course-layout">
+        <aside class="course-rail">
+          <span class="eyebrow">本章实验手册</span>
+          <div id="rail-links"></div>
+          <div class="rail-data">
+            <b>CampusScope</b><span>2026 新生数据观察站</span>
+            <p>80 人 / 4 个班 / 12 省份<br />全部为虚构教学数据</p>
+            <a href="data/students.csv" download>下载 students.csv ↓</a>
+          </div>
+          <a class="rail-final" href="#final">打开完整观察站 ↗</a>
+        </aside>
+        <div id="lessons"></div>
+      </div>
+      <section id="final" class="wrap final-section">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">THE FINAL BUILD / 完整作品</p>
+            <h2>CampusScope<span class="year">2026</span></h2>
+            <p>新生数据观察站 · 从整体出发，进入每一个班级。</p>
+          </div>
+          <a class="text-link" href="data/students.csv" download>下载数据 ↓</a>
+        </div>
+        <div id="final-dashboard" class="dashboard-shell"></div>
+      </section>
+      <footer class="wrap footer">
+        <div>
+          <b>LESSON 06 · 网页页面布局</b>
+          <p>
+            课程结构参考李昕老师《可视化导论》课程模板。独立教学演示，非学校官方数据。
+          </p>
+        </div>
+        <div>
+          <a
+            href="https://cinger007.github.io/vis/"
+            target="_blank"
+            rel="noopener"
+            >原课程模板 ↗</a
+          ><a
+            href="https://d3js.org/d3-hierarchy/treemap"
+            target="_blank"
+            rel="noopener"
+            >D3 文档 ↗</a
+          >
+        </div>
+      </footer>
+    </main>
+    <div id="load-error" role="alert" hidden></div>
+    <noscript>请启用 JavaScript，以运行 D3 布局实验。</noscript>
+  </body>
+</html>

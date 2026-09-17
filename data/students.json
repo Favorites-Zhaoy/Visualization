@@ -1,0 +1,802 @@
+[
+  {
+    "student_id": "S001",
+    "class_name": "软件工程2班",
+    "gender": "女",
+    "age": 18,
+    "province": "河南",
+    "region": "华中",
+    "admission_score": 610,
+    "interest": "前端开发"
+  },
+  {
+    "student_id": "S002",
+    "class_name": "软件工程1班",
+    "gender": "女",
+    "age": 19,
+    "province": "湖北",
+    "region": "华中",
+    "admission_score": 603,
+    "interest": "数据分析"
+  },
+  {
+    "student_id": "S003",
+    "class_name": "数字媒体1班",
+    "gender": "女",
+    "age": 19,
+    "province": "湖南",
+    "region": "华中",
+    "admission_score": 612,
+    "interest": "前端开发"
+  },
+  {
+    "student_id": "S004",
+    "class_name": "软件工程1班",
+    "gender": "女",
+    "age": 18,
+    "province": "河南",
+    "region": "华中",
+    "admission_score": 560,
+    "interest": "前端开发"
+  },
+  {
+    "student_id": "S005",
+    "class_name": "数字媒体1班",
+    "gender": "男",
+    "age": 19,
+    "province": "四川",
+    "region": "西南",
+    "admission_score": 603,
+    "interest": "人工智能"
+  },
+  {
+    "student_id": "S006",
+    "class_name": "软件工程1班",
+    "gender": "女",
+    "age": 18,
+    "province": "湖南",
+    "region": "华中",
+    "admission_score": 595,
+    "interest": "人工智能"
+  },
+  {
+    "student_id": "S007",
+    "class_name": "数字媒体1班",
+    "gender": "男",
+    "age": 18,
+    "province": "浙江",
+    "region": "华东",
+    "admission_score": 588,
+    "interest": "视觉设计"
+  },
+  {
+    "student_id": "S008",
+    "class_name": "软件工程1班",
+    "gender": "女",
+    "age": 18,
+    "province": "江西",
+    "region": "华东",
+    "admission_score": 584,
+    "interest": "前端开发"
+  },
+  {
+    "student_id": "S009",
+    "class_name": "软件工程1班",
+    "gender": "男",
+    "age": 18,
+    "province": "浙江",
+    "region": "华东",
+    "admission_score": 597,
+    "interest": "前端开发"
+  },
+  {
+    "student_id": "S010",
+    "class_name": "软件工程2班",
+    "gender": "男",
+    "age": 18,
+    "province": "江西",
+    "region": "华东",
+    "admission_score": 554,
+    "interest": "前端开发"
+  },
+  {
+    "student_id": "S011",
+    "class_name": "软件工程2班",
+    "gender": "男",
+    "age": 18,
+    "province": "四川",
+    "region": "西南",
+    "admission_score": 592,
+    "interest": "视觉设计"
+  },
+  {
+    "student_id": "S012",
+    "class_name": "数据科学1班",
+    "gender": "女",
+    "age": 19,
+    "province": "湖北",
+    "region": "华中",
+    "admission_score": 591,
+    "interest": "数据分析"
+  },
+  {
+    "student_id": "S013",
+    "class_name": "软件工程1班",
+    "gender": "男",
+    "age": 19,
+    "province": "江苏",
+    "region": "华东",
+    "admission_score": 601,
+    "interest": "前端开发"
+  },
+  {
+    "student_id": "S014",
+    "class_name": "软件工程2班",
+    "gender": "男",
+    "age": 18,
+    "province": "江苏",
+    "region": "华东",
+    "admission_score": 542,
+    "interest": "人工智能"
+  },
+  {
+    "student_id": "S015",
+    "class_name": "软件工程2班",
+    "gender": "男",
+    "age": 20,
+    "province": "广东",
+    "region": "华南",
+    "admission_score": 545,
+    "interest": "数据分析"
+  },
+  {
+    "student_id": "S016",
+    "class_name": "数字媒体1班",
+    "gender": "女",
+    "age": 18,
+    "province": "湖北",
+    "region": "华中",
+    "admission_score": 560,
+    "interest": "视觉设计"
+  },
+  {
+    "student_id": "S017",
+    "class_name": "数据科学1班",
+    "gender": "男",
+    "age": 19,
+    "province": "湖北",
+    "region": "华中",
+    "admission_score": 644,
+    "interest": "人工智能"
+  },
+  {
+    "student_id": "S018",
+    "class_name": "数据科学1班",
+    "gender": "男",
+    "age": 18,
+    "province": "湖北",
+    "region": "华中",
+    "admission_score": 586,
+    "interest": "人工智能"
+  },
+  {
+    "student_id": "S019",
+    "class_name": "数据科学1班",
+    "gender": "女",
+    "age": 19,
+    "province": "福建",
+    "region": "华东",
+    "admission_score": 605,
+    "interest": "数据分析"
+  },
+  {
+    "student_id": "S020",
+    "class_name": "软件工程1班",
+    "gender": "男",
+    "age": 18,
+    "province": "江苏",
+    "region": "华东",
+    "admission_score": 619,
+    "interest": "数据分析"
+  },
+  {
+    "student_id": "S021",
+    "class_name": "数字媒体1班",
+    "gender": "男",
+    "age": 17,
+    "province": "广东",
+    "region": "华南",
+    "admission_score": 565,
+    "interest": "数据分析"
+  },
+  {
+    "student_id": "S022",
+    "class_name": "数字媒体1班",
+    "gender": "女",
+    "age": 18,
+    "province": "湖南",
+    "region": "华中",
+    "admission_score": 587,
+    "interest": "视觉设计"
+  },
+  {
+    "student_id": "S023",
+    "class_name": "软件工程1班",
+    "gender": "男",
+    "age": 18,
+    "province": "江苏",
+    "region": "华东",
+    "admission_score": 612,
+    "interest": "前端开发"
+  },
+  {
+    "student_id": "S024",
+    "class_name": "软件工程2班",
+    "gender": "男",
+    "age": 18,
+    "province": "湖北",
+    "region": "华中",
+    "admission_score": 549,
+    "interest": "视觉设计"
+  },
+  {
+    "student_id": "S025",
+    "class_name": "软件工程2班",
+    "gender": "男",
+    "age": 18,
+    "province": "河南",
+    "region": "华中",
+    "admission_score": 575,
+    "interest": "数据分析"
+  },
+  {
+    "student_id": "S026",
+    "class_name": "软件工程2班",
+    "gender": "男",
+    "age": 18,
+    "province": "安徽",
+    "region": "华东",
+    "admission_score": 596,
+    "interest": "前端开发"
+  },
+  {
+    "student_id": "S027",
+    "class_name": "软件工程1班",
+    "gender": "女",
+    "age": 20,
+    "province": "安徽",
+    "region": "华东",
+    "admission_score": 559,
+    "interest": "数据分析"
+  },
+  {
+    "student_id": "S028",
+    "class_name": "软件工程1班",
+    "gender": "女",
+    "age": 18,
+    "province": "广东",
+    "region": "华南",
+    "admission_score": 597,
+    "interest": "视觉设计"
+  },
+  {
+    "student_id": "S029",
+    "class_name": "软件工程2班",
+    "gender": "女",
+    "age": 19,
+    "province": "安徽",
+    "region": "华东",
+    "admission_score": 580,
+    "interest": "前端开发"
+  },
+  {
+    "student_id": "S030",
+    "class_name": "软件工程1班",
+    "gender": "男",
+    "age": 18,
+    "province": "福建",
+    "region": "华东",
+    "admission_score": 593,
+    "interest": "人工智能"
+  },
+  {
+    "student_id": "S031",
+    "class_name": "数字媒体1班",
+    "gender": "男",
+    "age": 18,
+    "province": "广东",
+    "region": "华南",
+    "admission_score": 606,
+    "interest": "视觉设计"
+  },
+  {
+    "student_id": "S032",
+    "class_name": "数据科学1班",
+    "gender": "男",
+    "age": 19,
+    "province": "山东",
+    "region": "华东",
+    "admission_score": 612,
+    "interest": "视觉设计"
+  },
+  {
+    "student_id": "S033",
+    "class_name": "软件工程1班",
+    "gender": "女",
+    "age": 18,
+    "province": "广西",
+    "region": "华南",
+    "admission_score": 585,
+    "interest": "数据分析"
+  },
+  {
+    "student_id": "S034",
+    "class_name": "数据科学1班",
+    "gender": "女",
+    "age": 18,
+    "province": "广东",
+    "region": "华南",
+    "admission_score": 601,
+    "interest": "人工智能"
+  },
+  {
+    "student_id": "S035",
+    "class_name": "软件工程1班",
+    "gender": "女",
+    "age": 18,
+    "province": "广东",
+    "region": "华南",
+    "admission_score": 576,
+    "interest": "前端开发"
+  },
+  {
+    "student_id": "S036",
+    "class_name": "数据科学1班",
+    "gender": "男",
+    "age": 19,
+    "province": "四川",
+    "region": "西南",
+    "admission_score": 581,
+    "interest": "人工智能"
+  },
+  {
+    "student_id": "S037",
+    "class_name": "软件工程2班",
+    "gender": "男",
+    "age": 18,
+    "province": "湖南",
+    "region": "华中",
+    "admission_score": 611,
+    "interest": "前端开发"
+  },
+  {
+    "student_id": "S038",
+    "class_name": "数字媒体1班",
+    "gender": "女",
+    "age": 17,
+    "province": "湖北",
+    "region": "华中",
+    "admission_score": 584,
+    "interest": "前端开发"
+  },
+  {
+    "student_id": "S039",
+    "class_name": "软件工程1班",
+    "gender": "男",
+    "age": 17,
+    "province": "四川",
+    "region": "西南",
+    "admission_score": 596,
+    "interest": "前端开发"
+  },
+  {
+    "student_id": "S040",
+    "class_name": "软件工程2班",
+    "gender": "男",
+    "age": 18,
+    "province": "湖北",
+    "region": "华中",
+    "admission_score": 583,
+    "interest": "人工智能"
+  },
+  {
+    "student_id": "S041",
+    "class_name": "软件工程1班",
+    "gender": "女",
+    "age": 20,
+    "province": "湖北",
+    "region": "华中",
+    "admission_score": 569,
+    "interest": "前端开发"
+  },
+  {
+    "student_id": "S042",
+    "class_name": "软件工程2班",
+    "gender": "女",
+    "age": 18,
+    "province": "浙江",
+    "region": "华东",
+    "admission_score": 584,
+    "interest": "人工智能"
+  },
+  {
+    "student_id": "S043",
+    "class_name": "软件工程1班",
+    "gender": "男",
+    "age": 18,
+    "province": "江苏",
+    "region": "华东",
+    "admission_score": 565,
+    "interest": "人工智能"
+  },
+  {
+    "student_id": "S044",
+    "class_name": "软件工程1班",
+    "gender": "男",
+    "age": 18,
+    "province": "广东",
+    "region": "华南",
+    "admission_score": 563,
+    "interest": "数据分析"
+  },
+  {
+    "student_id": "S045",
+    "class_name": "数据科学1班",
+    "gender": "男",
+    "age": 20,
+    "province": "山东",
+    "region": "华东",
+    "admission_score": 585,
+    "interest": "数据分析"
+  },
+  {
+    "student_id": "S046",
+    "class_name": "数字媒体1班",
+    "gender": "男",
+    "age": 19,
+    "province": "湖南",
+    "region": "华中",
+    "admission_score": 640,
+    "interest": "人工智能"
+  },
+  {
+    "student_id": "S047",
+    "class_name": "软件工程2班",
+    "gender": "男",
+    "age": 18,
+    "province": "山东",
+    "region": "华东",
+    "admission_score": 572,
+    "interest": "数据分析"
+  },
+  {
+    "student_id": "S048",
+    "class_name": "软件工程1班",
+    "gender": "男",
+    "age": 17,
+    "province": "浙江",
+    "region": "华东",
+    "admission_score": 581,
+    "interest": "前端开发"
+  },
+  {
+    "student_id": "S049",
+    "class_name": "软件工程2班",
+    "gender": "女",
+    "age": 17,
+    "province": "浙江",
+    "region": "华东",
+    "admission_score": 622,
+    "interest": "前端开发"
+  },
+  {
+    "student_id": "S050",
+    "class_name": "数据科学1班",
+    "gender": "女",
+    "age": 18,
+    "province": "湖北",
+    "region": "华中",
+    "admission_score": 597,
+    "interest": "视觉设计"
+  },
+  {
+    "student_id": "S051",
+    "class_name": "软件工程1班",
+    "gender": "女",
+    "age": 18,
+    "province": "广东",
+    "region": "华南",
+    "admission_score": 620,
+    "interest": "视觉设计"
+  },
+  {
+    "student_id": "S052",
+    "class_name": "软件工程1班",
+    "gender": "男",
+    "age": 19,
+    "province": "湖南",
+    "region": "华中",
+    "admission_score": 574,
+    "interest": "数据分析"
+  },
+  {
+    "student_id": "S053",
+    "class_name": "数据科学1班",
+    "gender": "男",
+    "age": 17,
+    "province": "浙江",
+    "region": "华东",
+    "admission_score": 608,
+    "interest": "前端开发"
+  },
+  {
+    "student_id": "S054",
+    "class_name": "数据科学1班",
+    "gender": "男",
+    "age": 18,
+    "province": "福建",
+    "region": "华东",
+    "admission_score": 579,
+    "interest": "前端开发"
+  },
+  {
+    "student_id": "S055",
+    "class_name": "软件工程2班",
+    "gender": "女",
+    "age": 19,
+    "province": "湖南",
+    "region": "华中",
+    "admission_score": 583,
+    "interest": "视觉设计"
+  },
+  {
+    "student_id": "S056",
+    "class_name": "数字媒体1班",
+    "gender": "男",
+    "age": 19,
+    "province": "湖南",
+    "region": "华中",
+    "admission_score": 591,
+    "interest": "视觉设计"
+  },
+  {
+    "student_id": "S057",
+    "class_name": "数据科学1班",
+    "gender": "女",
+    "age": 17,
+    "province": "四川",
+    "region": "西南",
+    "admission_score": 582,
+    "interest": "前端开发"
+  },
+  {
+    "student_id": "S058",
+    "class_name": "软件工程2班",
+    "gender": "女",
+    "age": 18,
+    "province": "广东",
+    "region": "华南",
+    "admission_score": 562,
+    "interest": "数据分析"
+  },
+  {
+    "student_id": "S059",
+    "class_name": "软件工程2班",
+    "gender": "女",
+    "age": 18,
+    "province": "江苏",
+    "region": "华东",
+    "admission_score": 601,
+    "interest": "人工智能"
+  },
+  {
+    "student_id": "S060",
+    "class_name": "数据科学1班",
+    "gender": "女",
+    "age": 20,
+    "province": "湖南",
+    "region": "华中",
+    "admission_score": 626,
+    "interest": "视觉设计"
+  },
+  {
+    "student_id": "S061",
+    "class_name": "数字媒体1班",
+    "gender": "女",
+    "age": 19,
+    "province": "广东",
+    "region": "华南",
+    "admission_score": 588,
+    "interest": "数据分析"
+  },
+  {
+    "student_id": "S062",
+    "class_name": "软件工程1班",
+    "gender": "男",
+    "age": 19,
+    "province": "广西",
+    "region": "华南",
+    "admission_score": 617,
+    "interest": "前端开发"
+  },
+  {
+    "student_id": "S063",
+    "class_name": "数字媒体1班",
+    "gender": "女",
+    "age": 18,
+    "province": "山东",
+    "region": "华东",
+    "admission_score": 595,
+    "interest": "视觉设计"
+  },
+  {
+    "student_id": "S064",
+    "class_name": "软件工程2班",
+    "gender": "女",
+    "age": 18,
+    "province": "湖南",
+    "region": "华中",
+    "admission_score": 612,
+    "interest": "人工智能"
+  },
+  {
+    "student_id": "S065",
+    "class_name": "软件工程1班",
+    "gender": "女",
+    "age": 18,
+    "province": "广东",
+    "region": "华南",
+    "admission_score": 611,
+    "interest": "视觉设计"
+  },
+  {
+    "student_id": "S066",
+    "class_name": "数据科学1班",
+    "gender": "男",
+    "age": 19,
+    "province": "广西",
+    "region": "华南",
+    "admission_score": 598,
+    "interest": "数据分析"
+  },
+  {
+    "student_id": "S067",
+    "class_name": "数据科学1班",
+    "gender": "女",
+    "age": 18,
+    "province": "浙江",
+    "region": "华东",
+    "admission_score": 572,
+    "interest": "数据分析"
+  },
+  {
+    "student_id": "S068",
+    "class_name": "软件工程1班",
+    "gender": "男",
+    "age": 18,
+    "province": "湖南",
+    "region": "华中",
+    "admission_score": 568,
+    "interest": "视觉设计"
+  },
+  {
+    "student_id": "S069",
+    "class_name": "软件工程1班",
+    "gender": "男",
+    "age": 18,
+    "province": "广东",
+    "region": "华南",
+    "admission_score": 571,
+    "interest": "前端开发"
+  },
+  {
+    "student_id": "S070",
+    "class_name": "数据科学1班",
+    "gender": "女",
+    "age": 18,
+    "province": "江苏",
+    "region": "华东",
+    "admission_score": 621,
+    "interest": "数据分析"
+  },
+  {
+    "student_id": "S071",
+    "class_name": "数据科学1班",
+    "gender": "男",
+    "age": 19,
+    "province": "河南",
+    "region": "华中",
+    "admission_score": 607,
+    "interest": "数据分析"
+  },
+  {
+    "student_id": "S072",
+    "class_name": "软件工程2班",
+    "gender": "女",
+    "age": 19,
+    "province": "江西",
+    "region": "华东",
+    "admission_score": 573,
+    "interest": "人工智能"
+  },
+  {
+    "student_id": "S073",
+    "class_name": "软件工程2班",
+    "gender": "男",
+    "age": 19,
+    "province": "广东",
+    "region": "华南",
+    "admission_score": 603,
+    "interest": "数据分析"
+  },
+  {
+    "student_id": "S074",
+    "class_name": "数字媒体1班",
+    "gender": "女",
+    "age": 18,
+    "province": "山东",
+    "region": "华东",
+    "admission_score": 560,
+    "interest": "前端开发"
+  },
+  {
+    "student_id": "S075",
+    "class_name": "软件工程1班",
+    "gender": "女",
+    "age": 18,
+    "province": "广东",
+    "region": "华南",
+    "admission_score": 598,
+    "interest": "人工智能"
+  },
+  {
+    "student_id": "S076",
+    "class_name": "软件工程2班",
+    "gender": "男",
+    "age": 19,
+    "province": "江西",
+    "region": "华东",
+    "admission_score": 584,
+    "interest": "人工智能"
+  },
+  {
+    "student_id": "S077",
+    "class_name": "软件工程1班",
+    "gender": "男",
+    "age": 18,
+    "province": "河南",
+    "region": "华中",
+    "admission_score": 612,
+    "interest": "人工智能"
+  },
+  {
+    "student_id": "S078",
+    "class_name": "数据科学1班",
+    "gender": "女",
+    "age": 17,
+    "province": "江苏",
+    "region": "华东",
+    "admission_score": 598,
+    "interest": "数据分析"
+  },
+  {
+    "student_id": "S079",
+    "class_name": "数字媒体1班",
+    "gender": "男",
+    "age": 18,
+    "province": "四川",
+    "region": "西南",
+    "admission_score": 586,
+    "interest": "人工智能"
+  },
+  {
+    "student_id": "S080",
+    "class_name": "软件工程2班",
+    "gender": "女",
+    "age": 19,
+    "province": "安徽",
+    "region": "华东",
+    "admission_score": 576,
+    "interest": "前端开发"
+  }
+]
