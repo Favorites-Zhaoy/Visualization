@@ -3,150 +3,49 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
-  <meta name="description" content="第1章数据课程门户：新增1.6页面布局交互课程">
-  <title>第 1 章 · 数据｜课程门户</title>
+  <meta name="description" content="从信息结构到响应式界面：中英双语、案例驱动的页面布局课程。">
+  <title>第 6 章 · 页面布局 | Chapter 6 · Page Layout</title>
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%23121d33'/%3E%3Cpath d='M7 8h18v5H7zm0 8h8v8H7zm11 0h7v8h-7z' fill='%237ee0c3'/%3E%3C/svg%3E">
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-  <header class="portal-nav">
-    <a class="back" href="#">← <b data-i18n="portal">课程门户</b></a>
-    <nav aria-label="课程章节">
-      <a href="#" data-i18n="portal">课程门户</a><a href="#chapter" data-i18n="ch1">第 1 章 · 数据</a><a href="#" data-i18n="ch2">第 2 章 · 数据可视化流程</a><a href="#" data-i18n="ch3">第 3 章 · 色彩专题</a><a href="#" data-i18n="ch4">第 4 章 · 低维可视化</a><a href="#" data-i18n="ch5">第 5 章 · 时序可视化</a>
-    </nav>
-    <div class="lang" aria-label="Language"><button data-lang="zh" class="active">中</button><button data-lang="en">EN</button></div>
+  <header class="topbar">
+    <a class="brand" href="#top"><span>06</span><strong data-t="course">页面布局</strong></a>
+    <div class="top-actions">
+      <span class="case-count" id="caseCount">CASE 01 / 07</span>
+      <button class="xray-btn" id="xrayBtn" aria-pressed="false">⌗ <span data-t="xray">布局透视</span></button>
+      <div class="lang" aria-label="Language"><button data-lang="zh" class="active">中</button><button data-lang="en">EN</button></div>
+    </div>
   </header>
 
-  <section class="chapter-hero" id="chapter">
-    <div><h1 data-i18n="heroTitle">第 1 章 数据</h1><p data-i18n="heroSub">Doc-01 集成教学页面 · 讲解 ⇄ 代码 ⇄ 演示 三 tab 切换</p></div>
-    <p><kbd>Tab</kbd> <span data-i18n="tip">切换章节 · 每个章节内三 tab 自由切换</span></p>
-  </section>
-
-  <div class="page-shell">
-    <aside class="toc">
-      <h2 data-i18n="toc">章节目录</h2>
-      <nav id="tocNav">
-        <a href="#s11" class="active"><span>1.1</span> <b data-i18n="n11">数据生成</b></a>
-        <a href="#s12"><span>1.2</span> <b data-i18n="n12">数据定义</b></a>
-        <a href="#s13"><span>1.3</span> <b data-i18n="n13">数据属性</b></a>
-        <a href="#s14"><span>1.4</span> <b data-i18n="n14">数据变换</b></a>
-        <a href="#s15"><span>1.5</span> <b data-i18n="n15">D3 数据选择器</b></a>
-        <a href="#s16" class="new"><span>1.6</span> <b data-i18n="n16">页面布局</b><em>NEW</em></a>
-      </nav>
-      <div class="toc-extra"><a href="#s16">↗ <span data-i18n="demoSet">补充 demo 集合</span></a><a href="CSS.txt">common.demo-folder</a><a href="CSS.txt">↗ <span data-i18n="markdown">完整讲义 markdown</span></a></div>
+  <div class="course-shell" id="top">
+    <aside class="sidebar">
+      <p class="eyebrow">CHAPTER 06</p>
+      <h1 data-t="title">从信息结构到响应式界面</h1>
+      <p class="lead" data-t="lead">好的布局不是把元素放到正确的位置，而是在内容、屏幕和用户条件改变时，仍保持清晰的视觉关系。</p>
+      <nav id="lessonNav" aria-label="Course lessons"></nav>
+      <div class="progress-wrap"><div><span data-t="progress">课程进度</span><b id="progressText">14%</b></div><div class="progress"><i id="progressBar"></i></div></div>
     </aside>
 
-    <main class="course-card">
-      <section class="legacy lesson" id="s11">
-        <h2>1.1 <span data-i18n="n11">数据生成</span></h2>
-        <p class="subtitle" data-i18n="s11sub">基于新生数据（DeepSeek 合成）讲解异步加载与字段映射</p>
-        <div class="static-tabs"><span class="on">📖 <i data-i18n="explain">讲解</i></span><span>⌨️ <i data-i18n="code">关键代码</i></span><span>▶️ <i data-i18n="demo">演示</i></span></div>
-        <article><h3 data-i18n="caseTitle">你的原案例</h3><p data-i18n="caseBody">本章采用中国石油大学（华东）2025 级新生数据，阐述数据的特性。为了防止数据隐私泄露，数据采用 DeepSeek 大模型生成。数据文件 <code>data/newstudent.csv</code>，含 80 条记录。</p><h3 data-i18n="theoryTitle">嵌入理论：AI 合成数据的可信度边界</h3><p><b data-i18n="quality">数据质量四维度</b>（Wang &amp; Strong 1996）：<span data-i18n="dimensions">准确性 / 完整性 / 一致性 / 时效性。</span></p><ul><li>✅ <span data-i18n="complete">完整性：字段齐全</span></li><li>⚠️ <span data-i18n="accuracy">准确性：姓名/籍贯是虚构的，不能用于真实人口分析</span></li><li>⚠️ <span data-i18n="bias">采样偏差：模型倾向“看起来合理”的分布</span></li></ul><aside class="note"><b data-i18n="keyPoint">课堂要点：</b> <span data-i18n="keyBody">教学场景使用合成数据没问题，但必须标注“合成数据”，避免学生误以为真实分布。</span></aside></article>
+    <main class="lesson-area">
+      <section class="case-hero">
+        <div><p class="eyebrow" id="caseLabel">CASE 01 · DIAGNOSE</p><h2 id="lessonTitle"></h2><p id="lessonQuestion"></p></div>
+        <div class="outcome"><small data-t="outcome">本节结论</small><strong id="lessonOutcome"></strong></div>
       </section>
 
-      <section class="legacy mini lesson" id="s12"><h2>1.2 <span data-i18n="n12">数据定义</span></h2><p data-i18n="p12">区别数据、信息、知识与智慧，建立后续可视化分析的概念基础。</p></section>
-      <section class="legacy mini lesson" id="s13"><h2>1.3 <span data-i18n="n13">数据属性</span></h2><p data-i18n="p13">识别定类、定序、定距与定比属性，理解属性类型如何约束视觉编码。</p></section>
-      <section class="legacy mini lesson" id="s14"><h2>1.4 <span data-i18n="n14">数据变换</span></h2><p data-i18n="p14">通过筛选、聚合与派生，把原始记录转化为可回答问题的数据结构。</p></section>
-      <section class="legacy mini lesson" id="s15"><h2>1.5 <span data-i18n="n15">D3 数据选择器</span></h2><p data-i18n="p15">理解数据连接与 DOM 元素之间的映射关系，为动态可视化建立更新模型。</p></section>
-
-      <section class="lesson layout-lesson" id="s16">
-        <div class="lesson-heading"><div><p class="case-label">CASE · CAMPUSHUB</p><h2>1.6 <span data-i18n="n16">页面布局</span></h2><p class="subtitle" data-i18n="s16sub">从信息结构到响应式界面：用布局系统重构校园活动网站</p></div><div class="takeaway"><small data-i18n="takeaway">核心结论</small><b data-i18n="takeawayBody">布局是信息关系的表达，不是元素位置的堆砌。</b></div></div>
-
-        <div class="tabs" role="tablist">
-          <button role="tab" data-tab="explain" class="active">📖 <span data-i18n="explain">讲解</span></button>
-          <button role="tab" data-tab="code">⌨️ <span data-i18n="code">关键代码</span></button>
-          <button role="tab" data-tab="demo">▶️ <span data-i18n="demo">演示</span></button>
-        </div>
-
-        <div class="tab-panel" id="explainPanel">
-          <section class="intro-grid"><div><h3 data-i18n="problemTitle">案例问题：为什么 CampusHub 看起来很乱？</h3><p data-i18n="problemBody">固定宽度、任意边距和绝对定位只在一张截图中“成立”。内容变长或屏幕缩小时，导航拥挤、卡片错位，侧栏还会打断阅读顺序。</p></div><div class="bad-preview"><b>BAD LAYOUT</b><div class="bad-nav">LOGO　首页　活动　　　　　　　　登录</div><div class="bad-cards">活动 1　活动 2　活动 3　活动 4</div><i></i></div></section>
-          <h3 data-i18n="methodTitle">用“关系”而不是“属性”思考</h3>
-          <div class="logic"><span data-i18n="symptom">现象</span><i>→</i><span data-i18n="issue">问题</span><i>→</i><span data-i18n="principle">原理</span><i>→</i><span data-i18n="decision">决策</span><i>→</i><span data-i18n="result">结果</span></div>
-          <section class="theory-course" aria-labelledby="theoryCourseTitle">
-            <div class="theory-course-head"><div><small>LESSON 01–06</small><h3 id="theoryCourseTitle">页面布局完整学习路径</h3></div><span id="theoryProgress">01 / 06</span></div>
-            <nav class="theory-module-nav" id="theoryModuleNav" aria-label="页面布局课程"></nav>
-            <article class="theory-module" id="theoryLessonContent" aria-live="polite"></article>
-          </section>
-          <aside class="accessibility-check"><b id="accessibilityNoteTitle">布局验收底线</b><p id="accessibilityNoteBody">DOM 源顺序、视觉阅读顺序与键盘焦点顺序应保持一致；缩放、长文本和内容增长时，布局仍应可读、可操作。</p><span>DOM → VISUAL → FOCUS → ZOOM</span></aside>
-          <aside class="note blue"><b data-i18n="judge">布局判断：</b> <span data-i18n="judgeBody">自然阅读用 Normal Flow；一个方向用 Flexbox；两个方向用 Grid；脱离文档关系才考虑 Position。</span></aside>
-        </div>
-
-        <div class="tab-panel hidden" id="codePanel">
-          <div class="module-code-label"><small>ACTIVE LESSON</small><b id="codeLessonTitle">6.1 诊断布局</b></div>
-          <div class="code-grid"><div class="codebox"><button id="copyCode" data-i18n="copy">复制代码</button><pre><code id="lessonCode"></code></pre></div><div class="code-notes" id="lessonNotes"></div></div>
-          <button class="run" id="runDemo">▶ <span data-i18n="run">在演示中运行</span></button>
-        </div>
-
-        <div class="tab-panel hidden" id="demoPanel">
-          <div class="lab-head"><div><h3 data-i18n="labTitle">Layout Lab · 五个布局实验</h3><p data-i18n="labSub">改变约束、观察结果，再用布局原理解释变化。</p></div><span class="lab-progress"><b id="labNumber">01</b> / 05</span></div>
-          <div class="lab-switcher" role="tablist" aria-label="Layout experiments">
-            <button class="active" data-lab="flex" role="tab"><span>01</span><b>Flexbox</b></button>
-            <button data-lab="grid" role="tab"><span>02</span><b>Grid</b></button>
-            <button data-lab="responsive" role="tab"><span>03</span><b>Responsive + X-Ray</b></button>
-            <button data-lab="compare" role="tab"><span>04</span><b>Before / After</b></button>
-            <button data-lab="container" role="tab"><span>05</span><b>Container Query</b></button>
-          </div>
-
-          <section class="lab-panel" data-lab-panel="flex">
-            <div class="lab-copy"><h4 data-i18n="flexTitle">Flexbox：在一条轴上分配与对齐</h4><p data-i18n="flexIntro">导航是一维关系。改变方向后，主轴也会随之改变；换行只是在多条独立的弹性行上继续一维计算。</p></div>
-            <div class="control-grid">
-              <label><span>flex-direction</span><select id="flexDirection"><option value="row">row</option><option value="column">column</option></select></label>
-              <label><span>justify-content</span><select id="flexJustify"><option value="flex-start">flex-start</option><option value="center">center</option><option value="space-between" selected>space-between</option><option value="space-around">space-around</option></select></label>
-              <label><span>align-items</span><select id="flexAlign"><option value="flex-start">flex-start</option><option value="center" selected>center</option><option value="flex-end">flex-end</option><option value="stretch">stretch</option></select></label>
-              <label><span>flex-wrap</span><select id="flexWrap"><option value="nowrap">nowrap</option><option value="wrap">wrap</option></select></label>
-              <label class="wide"><span data-i18n="containerWidth">容器宽度</span><input id="flexWidth" type="range" min="280" max="760" value="680"><b id="flexWidthValue">680 px</b></label>
-            </div>
-            <div class="experiment-stage axes-stage"><div class="axis-label main-axis" id="mainAxis">MAIN AXIS →</div><div class="axis-label cross-axis" id="crossAxis">CROSS AXIS ↓</div><div class="flex-playground" id="flexPlayground"><article>CampusHub</article><article data-i18n="navDiscover">发现活动</article><article data-i18n="navClubs">浏览社团</article><article data-i18n="navProfile">个人中心</article></div></div>
-            <div class="lab-rule"><b data-i18n="why">为什么？</b><span id="flexInsight"></span><code id="flexCode"></code></div>
-          </section>
-
-          <section class="lab-panel hidden" data-lab-panel="grid">
-            <div class="lab-copy"><h4 data-i18n="gridTitle">Grid Playground：让内容共享行列坐标</h4><p data-i18n="gridIntro">同时调整轨道数量、卡片最小宽度和间距。开启自动适配后，列数由容器空间和内容下限共同决定。</p></div>
-            <div class="control-grid">
-              <label><span data-i18n="columns">固定列数</span><input id="gridColumns" type="range" min="1" max="4" value="3"><b id="gridColumnsValue">3</b></label>
-              <label><span data-i18n="minCard">卡片最小宽度</span><input id="gridMin" type="range" min="110" max="260" step="10" value="170"><b id="gridMinValue">170 px</b></label>
-              <label><span>gap</span><input id="gridGap" type="range" min="4" max="40" step="4" value="16"><b id="gridGapValue">16 px</b></label>
-              <label class="toggle"><input id="gridAuto" type="checkbox"><span>auto-fit + minmax()</span></label>
-            </div>
-            <div class="experiment-stage grid-playground" id="gridPlayground"> <article>01<br><b data-i18n="event1">设计之夜</b></article><article>02<br><b data-i18n="event2">开放舞台</b></article><article>03<br><b data-i18n="event3">绿色市集</b></article><article>04<br><b data-i18n="event4">电影放映</b></article><article>05<br><b data-i18n="event5">晨间跑步</b></article><article>06<br><b data-i18n="event6">创客工作坊</b></article></div>
-            <div class="lab-rule"><b data-i18n="activeRule">当前规则</b><span id="gridInsight"></span><code id="gridCode"></code></div>
-          </section>
-
-          <section class="lab-panel hidden" data-lab-panel="responsive">
-            <div class="lab-copy"><h4 id="responsiveTitle">响应式视口：让内容决定断点</h4><p id="responsiveIntro">拖动视口，观察卡片列数、主内容与侧栏关系何时失效。开启透视后可查看 12 列网格、容器边界、gap 和对齐线。</p></div>
-            <div class="control-grid responsive-controls">
-              <label class="wide"><span>Viewport</span><input id="responsiveWidth" type="range" min="320" max="1100" value="920"><b id="responsiveWidthValue">920 px</b></label>
-              <label><span>Layout strategy</span><select id="responsiveMode"><option value="fluid">Fluid</option><option value="fixed">Fixed 920px</option></select></label>
-              <button class="xray-toggle" id="xrayToggle" aria-pressed="false">⌗ <span id="xrayLabel">布局透视</span></button>
-            </div>
-            <div class="responsive-stage"><div class="browser responsive-browser" id="responsiveBrowser"><div class="browserbar"><i></i><i></i><i></i><span>campushub.edu</span></div><div class="campus"><div class="xray-grid" aria-hidden="true"></div><header data-region="Header"><b>CampusHub</b><nav data-i18n="campusNav">发现　社团　活动</nav><button data-i18n="signin">登录</button></header><div class="main-layout"><main data-region="Main Content"><small data-i18n="week">本周精选</small><h3 data-i18n="campusTitle">让校园因连接而更亲近。</h3><div class="cards" data-region="Card Grid"><article>🎨<b data-i18n="event1">设计之夜</b><small>19:00</small></article><article>🎸<b data-i18n="event2">开放舞台</b><small>18:30</small></article><article>🌱<b data-i18n="event3">绿色市集</b><small>12:00</small></article></div></main><aside data-region="Sidebar"><b data-i18n="popular">热门活动</b><p>01 Film Society</p><p>02 Night Run</p></aside></div></div></div></div>
-            <div class="xray-readout"><span><b id="responsiveState">Main + Sidebar</b><small id="responsiveMeasure">12 columns · gap 18px</small></span><code id="responsiveCode">grid-template-columns: minmax(0, 1fr) 180px;</code></div>
-          </section>
-
-          <section class="lab-panel hidden" data-lab-panel="compare">
-            <div class="lab-copy"><h4 data-i18n="compareTitle">Before / After：同一内容，两套空间规则</h4><p data-i18n="compareIntro">拖动分割线比较固定尺寸、任意间距与流动容器、统一节奏的差异。</p></div>
-            <div class="compare-wrap" id="compareWrap" style="--split:50%">
-              <div class="compare-side before"><b>BEFORE</b><header>LOGO　首页　活动　　　　　　登录</header><h5 data-i18n="campusEvents">校园活动中心</h5><div class="messy-cards"><i>活动 1</i><i>活动 2</i><i>活动 3</i><i>活动 4</i></div><aside data-i18n="fixedIssues">固定宽度 · 任意间距 · 层级模糊</aside></div>
-              <div class="compare-side after"><b>AFTER</b><header><strong>CampusHub</strong><span data-i18n="campusNav">发现　社团　活动</span></header><h5 data-i18n="campusTitle">让校园因连接而更亲近。</h5><div class="clean-cards"><i>🎨</i><i>🎸</i><i>🌱</i></div><aside data-i18n="fluidWins">流动容器 · 间距系统 · 清晰层级</aside></div>
-              <div class="compare-handle" aria-hidden="true"></div><input id="compareRange" aria-label="Before and after comparison" type="range" min="0" max="100" value="50">
-            </div>
-            <div class="compare-notes"><span>← <b data-i18n="beforeNote">只适合一张截图</b></span><span><b data-i18n="afterNote">适应内容与空间</b> →</span></div>
-          </section>
-
-          <section class="lab-panel hidden" data-lab-panel="container">
-            <div class="lab-copy"><h4 data-i18n="cqTitle">Container Query：让组件响应自己的空间</h4><p data-i18n="cqIntro">移动的是同一个 Event Card，HTML 不变。它进入宽主区域时横向展开，进入窄侧栏时自动变为纵向。</p></div>
-            <div class="cq-actions"><button data-cq-target="main" class="active" data-i18n="putMain">放入主区域</button><button data-cq-target="side" data-i18n="putSide">放入侧栏</button></div>
-            <div class="cq-layout"><div class="cq-host main-host" id="cqMain"><span class="host-label" data-i18n="mainArea">MAIN · 主区域</span><article class="cq-card" id="cqCard"><div class="cq-art">🎨</div><div><small>EVENT 01</small><h5 data-i18n="event1">设计之夜</h5><p data-i18n="eventDesc">认识新朋友，用一晚共同完成校园视觉海报。</p></div></article></div><aside class="cq-host side-host" id="cqSide"><span class="host-label" data-i18n="sideArea">SIDEBAR · 侧栏</span></aside></div>
-            <div class="lab-rule"><b data-i18n="componentState">组件状态</b><span id="cqState"></span><code>@container (min-width: 32rem) { .event-card { grid-template-columns: 10rem 1fr; } }</code></div>
-          </section>
-
-          <p class="heuristic"><b>Layout Lab</b> <span data-i18n="heuristic">中的判断与评分用于教学，不是正式 Web 标准。</span></p>
-        </div>
-      </section>
+      <div class="tabs" role="tablist">
+        <button role="tab" data-tab="explain" class="active">📖 <span data-t="explain">讲解</span></button>
+        <button role="tab" data-tab="code">⌨ <span data-t="code">关键代码</span></button>
+        <button role="tab" data-tab="demo">▶ <span data-t="demo">动态演示</span></button>
+      </div>
+      <section class="panel" id="panel" aria-live="polite"></section>
+      <footer class="lesson-footer"><button id="prevBtn">← <span data-t="prev">上一节</span></button><span id="footerCase"></span><button id="nextBtn"><span data-t="next">下一节</span> →</button></footer>
     </main>
   </div>
-  <script src="vendor/d3.v7.9.0.min.js"></script>
+
+  <template id="campusTemplate">
+    <div class="browser-demo campus"><div class="browser-bar"><i></i><i></i><i></i><span>campushub.edu</span></div><div class="campus-ui"><header><b>CampusHub</b><nav>Discover　Clubs　Events</nav><button>Sign in</button></header><div class="campus-grid"><main><p class="kicker">THIS WEEK</p><h3>Make campus feel smaller.</h3><div class="event-grid"><article>🎨<b>Design Night</b><small>Studio A · 19:00</small></article><article>🎸<b>Open Stage</b><small>South Lawn · 18:30</small></article><article>🌱<b>Green Market</b><small>Library Walk · 12:00</small></article></div></main><aside><b>Popular now</b><p>01 Film Society</p><p>02 Night Run</p></aside></div></div></div>
+  </template>
   <script src="app.js"></script>
-  <script src="lesson6-content.js"></script>
-  <script src="d3-labs.js"></script>
 </body>
 </html>
