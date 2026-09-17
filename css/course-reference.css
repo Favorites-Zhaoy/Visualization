@@ -36,4 +36,4 @@
 @media(max-width:370px){.lesson-chapter-title{font-size:30px;gap:12px}.lesson-title .lesson-subtitle{font-size:19px}}
 
 /* Keep selected summary rows legible against their pale highlight. */
-.week-load .week-bar.is-selected,.week-courses .week-bar.is-selected{color:#174f43;background:#e4edb8;border-color:#315f55;font-weight:650}.week-load .week-bar.is-selected .week-bar-label,.week-load .week-bar.is-selected .week-bar-value,.week-courses .week-bar.is-selected .week-bar-label,.week-courses .week-bar.is-selected .week-bar-value{color:#174f43}
+.week-load .week-bar.is-selected,.week-courses .week-bar.is-selected{color:#f5ffd7;background:#315f55;border-color:#23493e;font-weight:700}.week-load .week-bar.is-selected .week-bar-label,.week-load .week-bar.is-selected .week-bar-value,.week-courses .week-bar.is-selected .week-bar-label,.week-courses .week-bar.is-selected .week-bar-value{color:#f5ffd7}.week-load .week-bar.is-selected .week-bar-track,.week-courses .week-bar.is-selected .week-bar-track{background:#f7fae8}
