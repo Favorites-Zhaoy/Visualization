@@ -1,5 +1,5 @@
-import { state, dispatch } from './data.js?v=2';
-import { cleanupWith } from './lifecycle.js?v=2';
+import { state, dispatch } from './data.js?v=3';
+import { cleanupWith } from './lifecycle.js?v=3';
 
 // The distribution always uses class rows; the brush only filters the linked details.
 export function ageChart(host) {

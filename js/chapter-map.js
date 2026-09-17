@@ -1,4 +1,4 @@
-import { cleanupWith } from './lifecycle.js?v=2';
+import { cleanupWith } from './lifecycle.js?v=3';
 export function initChapterMap(){
   const palette=['#315f55','#a6ae67','#7d9190','#c5c6c3','#e8ed8b'];
   const cards=d3.selectAll('.knowledge-card');

@@ -1,0 +1,304 @@
+/* Document defaults and accessible controls. */
+
+:root {
+
+  font-family: Inter, "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
+  font-synthesis: none;
+  color: var(--text);
+  background: var(--page-bg);
+}
+
+* {
+
+  box-sizing: border-box;
+}
+
+html {
+
+  scroll-behavior: smooth;
+  scroll-padding-top: 94px;
+}
+
+body {
+
+  margin: 0;
+  line-height: 1.75;
+  font-size: 17px;
+}
+
+a {
+
+  color: inherit;
+  text-decoration: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+button {
+
+  font: inherit;
+  -webkit-tap-highlight-color: transparent;
+  cursor: pointer;
+  line-height: 1.4;
+  background: white;
+  border: 1px solid var(--line);
+  border-radius: 7px;
+  color: var(--text);
+  padding: 9px 14px;
+  min-height: 40px;
+}
+
+input {
+
+  font: inherit;
+  -webkit-tap-highlight-color: transparent;
+}
+
+select {
+
+  font: inherit;
+  -webkit-tap-highlight-color: transparent;
+  cursor: pointer;
+}
+
+button:focus-visible {
+
+  outline: 3px solid var(--focus);
+  outline-offset: 4px;
+}
+
+a:focus-visible {
+
+  outline: 3px solid var(--focus);
+  outline-offset: 4px;
+}
+
+input:focus-visible {
+
+  outline: 3px solid var(--focus);
+  outline-offset: 4px;
+}
+
+select:focus-visible {
+
+  outline: 3px solid var(--focus);
+  outline-offset: 4px;
+}
+
+[tabindex]:focus-visible {
+
+  outline: 3px solid var(--focus);
+  outline-offset: 4px;
+}
+
+button:disabled {
+
+  cursor: default;
+}
+
+button:hover {
+
+  border-color: var(--book-green);
+  background: var(--book-lime-soft);
+}
+
+button[aria-pressed=true] {
+
+  background: var(--book-green-dark);
+  border-color: var(--book-green-dark);
+  color: white;
+}
+
+button.active {
+
+  background: var(--book-green-dark);
+  border-color: var(--book-green-dark);
+  color: white;
+}
+
+h1 {
+
+  font-size: 47px;
+  font-weight: 750;
+  letter-spacing: -2px;
+  margin: 16px 0 22px;
+  line-height: 1.27;
+}
+
+h2 {
+
+  margin: 0;
+  line-height: 1.4;
+  font-size: 28px;
+  letter-spacing: -0.6px;
+}
+
+h3 {
+
+  margin: 0;
+  line-height: 1.4;
+  font-size: 22px;
+}
+
+h4 {
+
+  margin: 0;
+  line-height: 1.4;
+}
+
+p {
+
+  margin: 0;
+}
+
+p + p {
+
+  margin-top: 14px;
+}
+
+.wrap {
+
+  margin-inline: auto;
+  max-width: 1380px;
+  padding-inline: 48px;
+}
+
+.button {
+
+  display: inline-flex;
+  gap: 35px;
+  align-items: center;
+  justify-content: center;
+  padding: 11px 19px;
+  border-radius: 7px;
+  font-size: 15px;
+  font-weight: 600;
+}
+
+.primary {
+
+  background: var(--book-green-dark);
+  color: var(--book-lime);
+}
+
+.primary:hover {
+
+  background: var(--book-green);
+}
+
+.text-link {
+
+  font-size: 14px;
+  color: var(--accent);
+  font-weight: 600;
+}
+
+code {
+
+  font-family: Consolas, "Courier New", monospace;
+}
+
+.skip-link {
+
+  position: fixed;
+  top: -60px;
+  left: 10px;
+  z-index: 200;
+  background: white;
+  padding: 8px;
+}
+
+.skip-link:focus {
+
+  top: 10px;
+}
+
+#load-error {
+
+  position: fixed;
+  bottom: 20px;
+  left: 20px;
+  right: 20px;
+  background: #fff1f2;
+  border: 1px solid #fb7185;
+  padding: 20px;
+  z-index: 100;
+}
+
+@media (max-width: 1150px) {
+  html {
+
+    scroll-padding-top: 130px;
+  }
+}
+
+@media (max-width: 540px) {
+  h2 {
+
+    font-size: 25px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+
+    scroll-behavior: auto;
+  }
+
+  * {
+
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+  }
+
+  *::before {
+
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+  }
+
+  *::after {
+
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+  }
+}
+
+input[type=range] {
+
+  accent-color: var(--book-green);
+}
+
+[hidden] {
+
+  display: none !important;
+}
+
+@media (max-width:1050px) {
+  .wrap {
+
+    padding-inline: 32px;
+  }
+}
+
+@media (max-width:720px) {
+  .wrap {
+
+    padding-inline: 20px;
+  }
+}
+
+@media (max-width:360px) {
+  .wrap {
+
+    padding-inline: 16px;
+  }
+}
+
+/* Native controls retain usable touch targets, including compact lab controls. */
+
+@media (pointer: coarse) {
+  button, select, input[type="range"] {
+
+    min-height: 44px !important;
+  }
+}

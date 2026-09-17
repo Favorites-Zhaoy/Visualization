@@ -1,5 +1,5 @@
-import { state, classCounts, color, duration } from './data.js?v=2';
-import { cleanupWith } from './lifecycle.js?v=2';
+import { state, classCounts, color, duration } from './data.js?v=3';
+import { cleanupWith } from './lifecycle.js?v=3';
 
 export function initOpening(){
  const root=d3.select('#opening'),host=document.querySelector('#opening-morph');
@@ -24,12 +24,29 @@ export function initOpening(){
   const g=regions.selectAll('g').data(boxes,d=>d.name).join(enter=>{const x=enter.append('g');x.append('rect');x.append('text');return x},update=>update,exit=>exit.remove());
   g.select('rect').interrupt().transition().duration(time).attr('x',d=>d.x).attr('y',d=>d.y).attr('width',d=>d.w).attr('height',d=>d.h).attr('rx',3);
   g.select('text').attr('x',d=>d.x+8).attr('y',d=>d.y+15).style('font-size',w<400?'9px':'11px').text(d=>d.name);
-  nodes.interrupt().transition().duration(time).ease(d3.easeCubicInOut).attr('cx',(_,i)=>points[i][0]).attr('cy',(_,i)=>points[i][1]).attr('r',w<450?2.5:3.6);
+  nodes.interrupt().attr('opacity',1).transition().duration(time).ease(d3.easeCubicInOut).attr('cx',(_,i)=>points[i][0]).attr('cy',(_,i)=>points[i][1]).attr('r',w<450?2.5:3.6);
   root.select('.stage-en').text(stages[s][0]);root.select('.stage-zh').text(stages[s][1]);root.attr('data-opening-stage',s);
+ }
+ function emergeFromBook() {
+  render(0, false);
+  const br = document.querySelector('#course-book').getBoundingClientRect();
+  const mr = host.getBoundingClientRect();
+  const origin = [br.left + br.width * .58 - mr.left, br.top + br.height * .52 - mr.top];
+  const seeded = d3.randomLcg(20260917);
+  const birth = state.students.map(() => {
+   const angle = seeded() * Math.PI * 2, radius = 8 + seeded() * 55;
+   return [origin[0] + Math.cos(angle) * radius, origin[1] + Math.sin(angle) * radius];
+  });
+  const chaos = positions(0, host.clientWidth, host.clientHeight).points;
+  nodes.interrupt().attr('cx', (_,i) => birth[i][0]).attr('cy', (_,i) => birth[i][1]).attr('r', 1.8).attr('opacity', .15);
+  root.classed('is-morphing', true);
+  nodes.transition().duration(700).delay((_,i) => i * 4).ease(d3.easeCubicOut)
+   .attr('cx', (_,i) => chaos[i][0]).attr('cy', (_,i) => chaos[i][1])
+   .attr('r', host.clientWidth < 450 ? 2.5 : 3.6).attr('opacity', 1);
  }
  function finish(){cancel();finished=true;root.classed('is-open',true).classed('is-morphing',true).classed('is-finished',true);render(5,false);root.select('.stage-en').text('ONE DATASET · FIVE TRANSFORMATIONS');root.select('.stage-zh').text('80 个个体，最终成为一个有序的页面。');root.select('#open-book').attr('hidden',true);root.select('#explore-chapter').attr('hidden',null);root.select('#replay-opening').attr('hidden',null);root.select('#skip-opening').attr('hidden',true);}
  async function start(){cancel();finished=false;playing=true;const token=run;root.classed('is-finished',false).classed('is-morphing',false).classed('is-open',false);root.select('#open-book').attr('hidden',true);root.select('#explore-chapter').attr('hidden',true);root.select('#replay-opening').attr('hidden',true);root.select('#skip-opening').attr('hidden',null);
-  if(!duration()){finish();return}await pause(80);if(token!==run)return;root.classed('is-open',true);await pause(900);if(token!==run)return;root.classed('is-morphing',true);render(0,false);await pause(600);
+  if(!duration()){finish();return}root.select('.opening-visual').node().scrollIntoView({behavior:'smooth',block:'start'});await pause(80);if(token!==run)return;root.classed('is-open',true);await pause(900);if(token!==run)return;emergeFromBook();await pause(1150);
   for(let s=1;s<=5;s++){if(token!==run)return;render(s);await pause(1050)}if(token===run)finish();
  }
  root.select('#open-book').on('click',start);root.select('#replay-opening').on('click',start);root.select('#skip-opening').on('click',finish);

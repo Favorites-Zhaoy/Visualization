@@ -1,23 +1,18 @@
-import { initChapterMap } from "./chapter-map.js?v=2";
-import { initOpening } from "./opening.js?v=2";
-import { loadData, kpis } from "./data.js?v=2";
-import { buildCourse } from "./content.js?v=2";
-import { diagram, treemap } from "./charts.js?v=2";
-import { init61 } from "./lesson61.js?v=2";
-import { init62 } from "./lesson62.js?v=2";
-import { init63 } from "./lesson63.js?v=2";
-import { init64 } from "./lesson64.js?v=2";
-import { init65 } from "./lesson65.js?v=2";
-import { initFinal } from "./final-demo.js?v=2";
-import { initNav } from "./nav.js?v=2";
+import { initChapterMap } from "./chapter-map.js?v=3";
+import { initOpening } from "./opening.js?v=3";
+import { loadData } from "./data.js?v=3";
+import { buildCourse } from "./content.js?v=3";
+import { init61 } from "./lesson61.js?v=3";
+import { init62 } from "./lesson62.js?v=3";
+import { init63 } from "./lesson63.js?v=3";
+import { init64 } from "./lesson64.js?v=3";
+import { init65 } from "./lesson65.js?v=3";
+import { initFinal } from "./final-demo.js?v=3";
+import { initNav } from "./nav.js?v=3";
 async function main() {
   await loadData();
   buildCourse();
   initChapterMap();
-  d3.selectAll(".lesson").each(function (d) {
-    diagram(d3.select(this).select(".before svg"), +d.no.slice(-1), false);
-    diagram(d3.select(this).select(".after svg"), +d.no.slice(-1), true);
-  });
   initOpening();
   init61();
   init62();

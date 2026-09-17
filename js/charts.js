@@ -1,5 +1,5 @@
-import { ageChart } from "./age-chart.js?v=2";
-import { cleanupWith } from "./lifecycle.js?v=2";
+import { ageChart } from "./age-chart.js?v=3";
+import { cleanupWith } from "./lifecycle.js?v=3";
 import {
   state,
   classCounts,
@@ -10,7 +10,7 @@ import {
   kpis,
   classNames,
   dispatch,
-} from "./data.js?v=2";
+} from "./data.js?v=3";
 
 export function drawKpis(host, rows = state.students, product = false) {
   const sel = d3
@@ -119,25 +119,32 @@ export function treemap(host, options = {}) {
       .transition(t)
       .attr("width", (d) => d.x1 - d.x0)
       .attr("height", (d) => d.y1 - d.y0);
+    const labelPad = d => d.x1-d.x0 < 110 ? 8 : 14;
+    const visibleName = d => {
+      const full = (selection === d.data.name ? "✓ " : "") + d.data.name;
+      const font = d.x1-d.x0 < 135 ? 11 : 14;
+      const max = Math.max(2, Math.floor((d.x1-d.x0-labelPad(d)*2)/font));
+      return full.length > max ? full.slice(0, max-1) + "…" : full;
+    };
     gs.select(".cell-name")
-      .attr("x", 14)
+      .attr("x", labelPad)
       .attr("y", (d) => (d.y1 - d.y0 < 95 ? 20 : 27))
       .style("font-size", (d) => (d.x1 - d.x0 < 135 ? "11" : "14") + "px")
-      .text((d) => (selection === d.data.name ? "✓ " : "") + d.data.name);
+      .text(visibleName);
     gs.select(".cell-count")
-      .attr("x", 14)
+      .attr("x", labelPad)
       .attr("y", (d) => (d.y1 - d.y0 < 95 ? 43 : 65))
-      .style("font-size", (d) => (d.y1 - d.y0 < 95 ? "15px" : "30px"))
+      .style("font-size", (d) => (d.y1-d.y0 < 95 ? "15px" : d.x1-d.x0 < 110 ? "20px" : "30px"))
       .text((d) =>
-        d.y1 - d.y0 < 95
+        d.x1-d.x0 < 70 ? String(d.data.value) : d.x1-d.x0 < 110 ? d.data.value + "人" : d.y1 - d.y0 < 95
           ? d.data.value +
             "人 · " +
             d3.format(".1%")(d.data.value / state.students.length)
           : d.data.value + " 人",
       );
     gs.select(".cell-share")
-      .style("display", (d) => (d.y1 - d.y0 < 95 ? "none" : null))
-      .attr("x", 14)
+      .style("display", (d) => (d.y1-d.y0 < 95 || d.x1-d.x0 < 60 ? "none" : null))
+      .attr("x", labelPad)
       .attr("y", (d) => Math.min(89, d.y1 - d.y0 - 12))
       .style("font-size", "12px")
       .text((d) => d3.format(".1%")(d.data.value / state.students.length));
@@ -264,7 +271,7 @@ export function dashboard(host, { compact = false, xray = true } = {}) {
     id = "dash" + ++instance,
     s = d3.select(el);
   s.classed("dashboard", true).html(
-    `<div class="dashboard-head" data-region="Header"><div><span class="eyebrow">CAMPUSSCOPE / 2026</span><h3>新生数据观察站</h3></div><span class="synthetic">虚构数据 · 教学专用</span></div><div class="dashboard-controls"><label>查看班级 <select aria-label="查看班级"><option value="">全部班级</option>${classNames.map((n) => `<option>${n}</option>`).join("")}</select></label><div class="mode-switch"><button data-mode="overview-detail" aria-pressed="true">Overview + Detail</button><button data-mode="focus-context" aria-pressed="false">Focus + Context</button></div><button class="reset">重置</button>${xray ? '<button class="xray-toggle" aria-pressed="false">Layout X-Ray</button>' : ""}</div><div class="dashboard-kpis" data-region="KPI Area"></div><div class="dashboard-grid"><div class="overview panel" data-region="Main View"><div class="panel-heading"><h4>班级规模 <span>OVERVIEW</span></h4><span class="total-badge">80 人</span></div><p class="mode-note">面积代表人数 · 点击班级查看详情</p><div class="overview-treemap"></div><div class="chart-tooltip" role="status" aria-live="polite">选择任一班级，右侧联动更新。</div><div class="class-legend"></div></div><div class="detail panel" data-region="Detail View"><div class="panel-heading"><h4 class="selected-title">全体新生</h4><span>DETAIL</span></div><div class="detail-stats"></div><div class="gender"></div><h4 class="chart-title">年龄分布 <span>人数 · 固定纵轴</span></h4><div class="age-chart"></div><h4 class="chart-title">兴趣分布</h4><div class="interest-chart"></div></div></div>${compact ? "" : `<div class="student-panel panel" data-region="Supporting View"><div class="panel-heading"><h4>学生记录 <span>STUDENT RECORDS</span></h4><span class="list-count"></span></div><div class="table-scroll" tabindex="0" aria-label="学生列表，可滚动查看全部记录"><table><thead><tr><th scope="col">编号</th><th scope="col">班级</th><th scope="col">性别</th><th scope="col">年龄</th><th scope="col">省份</th><th scope="col">模拟录取分数</th><th scope="col">兴趣</th></tr></thead><tbody></tbody></table></div><p class="table-note">分数为模拟值，仅用于布局演示，不用于跨省教育评价。</p></div>`}<div class="xray-readout readout" hidden>点击带轮廓的区域查看实时尺寸。</div>`,
+    `<div class="dashboard-head" data-region="Header"><div><span class="eyebrow">CAMPUSSCOPE / 2026</span><h3>新生数据观察站</h3></div><span class="synthetic">虚构数据 · 教学专用</span></div><div class="dashboard-controls"><label>查看班级 <select aria-label="查看班级"><option value="">全部班级</option>${classNames.map((n) => `<option>${n}</option>`).join("")}</select></label><div class="mode-switch"><button data-mode="overview-detail" aria-pressed="true">Overview + Detail</button><button data-mode="focus-context" aria-pressed="false">Focus + Context</button></div><button class="reset">重置</button>${xray ? '<button class="xray-toggle" aria-pressed="false">Layout X-Ray</button>' : ""}</div><div class="selection-state" aria-live="polite"><span class="selection-label">CURRENT SELECTION</span><div class="selection-chips"></div><span class="selection-empty">全部班级 · 全部年龄</span></div><div class="dashboard-kpis" data-region="KPI Area" data-reading-order="1" data-anatomy="① KPI GRID · 概览总量"></div><div class="dashboard-grid"><div class="overview panel" data-region="Main View" data-reading-order="2" data-anatomy="② OVERVIEW · 比较班级规模"><div class="panel-heading"><h4>班级规模 <span>OVERVIEW</span></h4><span class="total-badge">80 人</span></div><p class="mode-note">面积代表人数 · 点击班级查看详情</p><div class="overview-treemap"></div><div class="chart-tooltip" role="status" aria-live="polite">选择任一班级，右侧联动更新。</div><div class="class-legend"></div></div><div class="detail panel" data-region="Detail View" data-reading-order="3" data-anatomy="③ DETAIL · 解释当前选择"><div class="panel-heading"><h4 class="selected-title">全体新生</h4><span>DETAIL</span></div><div class="detail-stats"></div><div class="gender"></div><h4 class="chart-title">年龄分布 <span>人数 · 固定纵轴</span></h4><div class="age-chart"></div><div class="supporting-view" data-anatomy="④ SUPPORTING · 补充兴趣分布"><h4 class="chart-title">兴趣分布</h4><div class="interest-chart"></div></div></div></div>${compact ? "" : `<div class="student-panel panel" data-region="Records" data-reading-order="4" data-anatomy="⑤ RECORDS · 核对原始记录"><div class="panel-heading"><h4>学生记录 <span>STUDENT RECORDS</span></h4><span class="list-count"></span></div><div class="table-scroll" tabindex="0" aria-label="学生列表，可滚动查看全部记录"><table><thead><tr><th scope="col">编号</th><th scope="col">班级</th><th scope="col">性别</th><th scope="col">年龄</th><th scope="col">省份</th><th scope="col">模拟录取分数</th><th scope="col">兴趣</th></tr></thead><tbody></tbody></table></div><p class="table-note">分数为模拟值，仅用于布局演示，不用于跨省教育评价。</p></div>`}<div class="xray-readout readout" hidden>点击带轮廓的区域查看实时尺寸。</div>`,
   );
   const tree = treemap(s.select(".overview-treemap").node(), {
     onSelect: (name) => dispatch.call("selectClass", null, name),
@@ -281,7 +288,20 @@ export function dashboard(host, { compact = false, xray = true } = {}) {
     .join("span")
     .html((d) => `<i style="background:${color(d.name)}"></i>${d.name}`);
   const age = ageChart(s.select(".age-chart").node());
+  function renderSelectionState() {
+    const chips = [];
+    if (state.selectedClass) chips.push({key: "class", label: state.selectedClass});
+    if (state.ageRange) chips.push({key: "age", label: `${state.ageRange[0]}–${state.ageRange[1]} 岁`});
+    s.select(".selection-empty").property("hidden", chips.length > 0);
+    s.select(".selection-chips").selectAll("button")
+      .data(chips, d => d.key).join("button")
+      .attr("class", "filter-chip")
+      .attr("aria-label", d => `清除${d.key === "class" ? "班级" : "年龄"}筛选：${d.label}`)
+      .text(d => `${d.label} ×`)
+      .on("click", (_, d) => dispatch.call(d.key === "class" ? "selectClass" : "ageRange", null, null));
+  }
   function update() {
+    renderSelectionState();
     const baseRows = classRows();
     const rows = selectedRows(),
       n = rows.length,
@@ -404,121 +424,4 @@ export function setupXray(root, button, readout) {
   window.addEventListener("resize", measure, {signal:controller.signal});
   const destroy=cleanupWith(()=>{ro.disconnect();controller.abort();});
   return { measure, destroy };
-}
-
-export function diagram(svg, type, after = true) {
-  svg.attr("viewBox", "0 0 300 100").attr("role", "img");
-  const palette = ["#315f55", "#aeb67b", "#91a5a1", "#c1ad89"];
-  let rects = [];
-  if (type === 1) {
-    rects = after
-      ? [
-          [4, 3, 292, 15, 0],
-          [4, 25, 65, 18, 1],
-          [78, 25, 65, 18, 1],
-          [153, 25, 65, 18, 1],
-          [228, 25, 68, 18, 1],
-          [4, 52, 190, 43, 0],
-          [203, 52, 93, 43, 3],
-        ]
-      : [
-          [12, 12, 85, 30, 0],
-          [112, 6, 60, 16, 1],
-          [200, 21, 82, 28, 3],
-          [72, 63, 82, 30, 2],
-          [171, 58, 119, 18, 0],
-        ];
-  }
-  if (type === 2) {
-    rects = after
-      ? [
-          [4, 10, 72, 73, 0],
-          [84, 10, 45, 73, 1],
-          [137, 10, 72, 73, 2],
-          [217, 10, 34, 73, 3],
-          [259, 10, 37, 73, 0],
-        ]
-      : [
-          [4, 38, 57, 42, 0],
-          [68, 5, 55, 52, 1],
-          [133, 33, 48, 48, 2],
-          [194, 11, 52, 52, 3],
-          [254, 46, 42, 44, 0],
-        ];
-  }
-  if (type === 3) {
-    rects = after
-      ? [
-          [4, 4, 167, 51, 0],
-          [4, 57, 167, 39, 1],
-          [173, 4, 123, 55, 2],
-          [173, 61, 123, 35, 3],
-        ]
-      : [
-          [4, 4, 144, 44, 0],
-          [152, 4, 144, 44, 1],
-          [4, 52, 144, 44, 2],
-          [152, 52, 144, 44, 3],
-        ];
-  }
-  if (type === 4) {
-    rects = [
-      [4, 4, after ? 165 : 135, 92, 0],
-      [after ? 178 : 154, 4, 118, 22, 1],
-      [after ? 178 : 154, 34, 25, 62, 0],
-      [after ? 211 : 187, 53, 25, 43, 2],
-      [after ? 244 : 220, 69, 25, 27, 3],
-    ];
-  }
-  if (type === 5) {
-    rects = after
-      ? [
-          [15, 4, 145, 92, 0],
-          [174, 4, 54, 92, 1],
-          [242, 4, 42, 92, 3],
-        ]
-      : [[30, 5, 240, 90, 0]];
-  }
-  svg
-    .selectAll("rect.shape")
-    .data(rects)
-    .join("rect")
-    .attr("class", "shape")
-    .attr("x", (d) => d[0])
-    .attr("y", (d) => d[1])
-    .attr("width", (d) => d[2])
-    .attr("height", (d) => d[3])
-    .attr("fill", (d) => palette[d[4]])
-    .attr("rx", 3);
-  if (type === 5) {
-    svg
-      .selectAll("rect.inner")
-      .data(
-        after
-          ? [
-              [22, 12, 131, 12],
-              [22, 31, 78, 57],
-              [107, 31, 46, 57],
-              [181, 12, 40, 18],
-              [181, 37, 40, 51],
-              [249, 12, 28, 15],
-              [249, 34, 28, 23],
-              [249, 65, 28, 23],
-            ]
-          : [
-              [40, 16, 220, 10],
-              [40, 35, 129, 47],
-              [180, 35, 80, 47],
-            ],
-      )
-      .join("rect")
-      .attr("class", "inner")
-      .attr("x", (d) => d[0])
-      .attr("y", (d) => d[1])
-      .attr("width", (d) => d[2])
-      .attr("height", (d) => d[3])
-      .attr("fill", "#fff")
-      .attr("opacity", 0.75)
-      .attr("rx", 2);
-  }
 }

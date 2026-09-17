@@ -1,3 +1,4 @@
+import { cleanupWith } from "./lifecycle.js?v=3";
 export const lessons = [
   {
     id: "lesson61",
@@ -65,7 +66,7 @@ stack.style("transform", "rotateX(" + rx + "deg) rotateY(" + ry + "deg)");
     after: "共享列线和间距，重要信息获得合适的跨度。",
     summary: "网格真正解决的不是“整齐”，而是建立稳定的阅读秩序。",
     intro:
-      "我们把上一节的 KPI 拿出来，做一个小实验：在 Random 模式里找“平均年龄”，再在 12-column Grid 模式里找一次。内容完全相同，寻找的路径却变短了。图表内部的位置帮助读数，图表外部的位置帮助组织阅读。",
+      "我们把上一节的 KPI 拿出来，做一个小实验：在“10 秒阅读实验”里，两次寻找“平均年龄”，记录你在 Random 和 Grid 中的个人用时。内容完全相同，寻找路径和个人用时可能不同。图表内部的位置帮助读数，图表外部的位置帮助组织阅读。",
     concepts: [
       [
         "随机与居中：整齐不一定高效",
@@ -292,6 +293,27 @@ window.addEventListener("scroll", scheduleReadStep, {passive: true});
   },
 ];
 
+const shifts = {
+ "6.1": ["元素散落，各自争夺注意力", "划分区域，建立阅读层级"],
+ "6.2": ["寻找数字，需要来回扫视", "对齐列线，建立稳定路径"],
+ "6.3": ["Equal space · 每班一样大", "Data-driven space · 人数决定面积"],
+ "6.4": ["每张图各自回答问题", "一次选择，多个视图同步"],
+ "6.5": ["把桌面挤进手机", "重排空间，也重排阅读路径"]
+};
+const probes = {
+ "6.1": [["bounds", "看真实区域尺寸 →"], ["layers", "看 translateZ 层级 →"]],
+ "6.2": [["columns", "看 12 列 →"], ["gap", "看 gap 的留白 →"], ["span", "看 span 如何换行 →"]],
+ "6.3": [["hierarchy", "看 hierarchy 的分组 →"], ["treemap", "看人数如何分配面积 →"], ["interpolate", "看坐标插值 →"]],
+ "6.4": [["dispatch", "看 dispatch 同步选择 →"], ["brush", "看 brushX 筛选 →"]],
+ "6.5": [["container", "看容器如何重排 →"], ["resize", "看 ResizeObserver 实测 →"]]
+};
+const purposes = {
+ "6.1": {JavaScript:"测量真实区域并控制空间层级", CSS:"为页面区域建立留白与层次"},
+ "6.2": {JavaScript:"保持卡片身份并执行 FLIP", CSS:"决定 12 列、间距与卡片跨度"},
+ "6.3": {JavaScript:"把班级人数转成空间，并连接两种布局"},
+ "6.4": {JavaScript:"广播筛选状态，让多个视图一起更新"},
+ "6.5": {CSS:"按可用空间调整阅读结构", JavaScript:"测量容器并跟随阅读进度更新视觉"}
+};
 export function buildCourse() {
   const cards = d3
     .select("#knowledge-cards")
@@ -301,12 +323,6 @@ export function buildCourse() {
     .attr("class", "knowledge-card");
   const verbs = ["EXPLODE", "SNAP", "MORPH", "LINK", "REFLOW"];
   cards.html((d, i) => `<div class="card-art" data-art="${d.no}"></div><div class="card-body"><div class="card-topline"><span class="card-number">${d.no}</span><span class="card-verb">${verbs[i]}</span></div><h3>${d.short}</h3><p>${d.subtitle}</p><button class="card-preview" aria-label="预览${d.short}布局变化">播放变化 ↻</button><a class="card-link" href="#${d.id}">进入实验<span>↗</span></a></div>`);
-  d3.select("#rail-links")
-    .selectAll("a")
-    .data(lessons)
-    .join("a")
-    .attr("href", (d) => "#" + d.id)
-    .text((d) => d.no + " " + d.short);
   const sections = d3
     .select("#lessons")
     .selectAll("section")
@@ -316,16 +332,17 @@ export function buildCourse() {
     .attr("class", "lesson");
   sections.each(function (d) {
     const s = d3.select(this);
+    let probeFrame = 0;
     s.html(
-      `<div class="lesson-header"><div class="lesson-kicker"><b>0${d.no.slice(-1)}</b><span>${d.short}</span></div><h2></h2><p class="lesson-question">${d.question}</p></div><div class="compare"><div class="compare-item before"><div class="compare-label">BEFORE / 改变之前</div><svg aria-label="${d.short}改进前示意"></svg><p>${d.before}</p></div><div class="compare-item after"><div class="compare-label">AFTER / 改变之后</div><svg aria-label="${d.short}改进后示意"></svg><p>${d.after}</p></div></div><div class="tabs" role="tablist" aria-label="${d.no}学习内容">${["📖 讲解", "⌨ 关键代码", "▷ Demo"].map((t, i) => `<button role="tab" id="${d.id}-tab${i}" aria-controls="${d.id}-panel${i}" aria-selected="${i === 0}" tabindex="${i === 0 ? 0 : -1}" data-tab="${i}">${t}</button>`).join("")}</div><div class="tab-panel explanation" id="${d.id}-panel0" role="tabpanel" aria-labelledby="${d.id}-tab0"><p>${d.intro}</p><div class="concept-pairs">${d.concepts.map(([h, p]) => `<div class="concept"><h4>${h}</h4><p>${p}</p></div>`).join("")}</div><button class="open-demo text-link">进入实验 →</button></div><div class="tab-panel code-panel" id="${d.id}-panel1" role="tabpanel" aria-labelledby="${d.id}-tab1" hidden><div class="code-heading"><span>关键片段 · ${d.no} / D3.js + CSS</span><button class="copy-code">复制代码</button></div><pre><code></code></pre><div class="code-note"><b>为什么这样写 / 易错点</b><br>${d.note}</div></div><div class="tab-panel demo-panel" id="${d.id}-panel2" role="tabpanel" aria-labelledby="${d.id}-tab2" hidden><p class="demo-guide">${d.challenge}</p><div id="demo${d.no.replace(".", "")}"></div></div><div class="lesson-summary"><span>TAKEAWAY</span>${d.summary}</div>`,
+      `<div class="lesson-header"><div class="lesson-kicker"><b>0${d.no.slice(-1)}</b><span>${d.short}</span></div><h2></h2><p class="lesson-question">${d.question}</p><div class="problem-shift" aria-label="本节布局变化"><span>${shifts[d.no][0]}</span><span aria-hidden="true">→</span><strong>${shifts[d.no][1]}</strong></div></div><div class="tabs" role="tablist" aria-label="${d.no}学习内容">${["📖 讲解", "⌨ 关键代码", "▷ Demo"].map((t, i) => `<button role="tab" id="${d.id}-tab${i}" aria-controls="${d.id}-panel${i}" aria-selected="${i === 0}" tabindex="${i === 0 ? 0 : -1}" data-tab="${i}">${t}</button>`).join("")}</div><div class="tab-panel explanation" id="${d.id}-panel0" role="tabpanel" aria-labelledby="${d.id}-tab0"><p>${d.intro}</p><div class="concept-pairs">${d.concepts.map(([h, p]) => `<div class="concept"><h4>${h}</h4><p>${p}</p></div>`).join("")}</div><button class="open-demo text-link">进入实验 →</button></div><div class="tab-panel code-panel" id="${d.id}-panel1" role="tabpanel" aria-labelledby="${d.id}-tab1" hidden><div class="code-heading"><span>关键片段 · ${d.no} / D3.js + CSS</span><button class="copy-code">复制代码</button></div><pre><code></code></pre><div class="code-note"><b>为什么这样写 / 易错点</b><br>${d.note}</div></div><div class="tab-panel demo-panel" id="${d.id}-panel2" role="tabpanel" aria-labelledby="${d.id}-tab2" hidden><p class="demo-guide">${d.challenge}</p><div id="demo${d.no.replace(".", "")}"></div></div><div class="lesson-summary"><span>TAKEAWAY</span>${d.summary}</div>`,
     );
     s.select(".lesson-header h2").text(d.title);
-    const blocks = splitCode(d);
+    const blocks = splitCode(d).map(block => ({...block, purpose: purposes[d.no][block.language]}));
     const panel = s.select(".code-panel");
     panel.html("");
     blocks.forEach((block) => {
       const h = panel.append("div").attr("class", "code-heading");
-      h.append("span").text(d.no + " / " + block.language + " · 关键片段");
+      h.append("span").text(block.language + " · " + block.purpose);
       h.append("button")
         .attr("class", "copy-code")
         .text("复制 " + block.language)
@@ -339,6 +356,17 @@ export function buildCourse() {
         });
       panel.append("pre").append("code").text(block.code);
     });
+    panel.append("div").attr("class", "code-probes").attr("aria-label", "代码对应的视觉效果")
+      .selectAll("button").data(probes[d.no]).join("button").attr("type", "button")
+      .attr("class", "code-probe").attr("data-demo", d.no.replace(".", ""))
+      .attr("data-probe", p => p[0]).text(p => p[1])
+      .on("click", (_, p) => {
+        selectTab(2, true);
+        cancelAnimationFrame(probeFrame);
+        probeFrame = requestAnimationFrame(() => window.dispatchEvent(new CustomEvent("lesson-probe", {
+          detail: {lesson: d.no.replace(".", ""), probe: p[0]}
+        })));
+      });
     panel
       .append("div")
       .attr("class", "code-note")
@@ -356,6 +384,7 @@ export function buildCourse() {
       );
       if (focus) s.select(`[data-tab="${index}"]`).node().focus();
       window.dispatchEvent(new Event("resize"));
+      window.dispatchEvent(new CustomEvent("lesson-tab-change", {detail:{lesson:d.no.replace(".",""),tab:index}}));
     }
     s.selectAll("[role=tab]")
       .on("click", function () {
@@ -372,6 +401,7 @@ export function buildCourse() {
         selectTab(n, true);
       });
     s.select(".open-demo").on("click", () => selectTab(2, true));
+    cleanupWith(() => {cancelAnimationFrame(probeFrame);s.selectAll(".code-probe,.copy-code,.open-demo,[role=tab]").on("click",null).on("keydown",null);});
   });
 }
 

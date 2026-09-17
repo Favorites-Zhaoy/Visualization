@@ -1,14 +1,30 @@
-import { state } from './data.js?v=2';
-import { dashboard } from './charts.js?v=2';
-import { initStory } from './story.js?v=2';
-import { cleanupWith } from './lifecycle.js?v=2';
+import { state } from './data.js?v=3';
+import { dashboard } from './charts.js?v=3';
+import { initStory } from './story.js?v=3';
+import { cleanupWith } from './lifecycle.js?v=3';
 
 export function init65() {
   const s = d3.select('#demo65');
   s.html(`<div class="responsive-studio"><div class="studio-heading"><span class="eyebrow">RESPONSIVE STUDIO</span><h3>改变空间，保留信息。</h3></div><div class="viewport-toolbar" aria-label="设备尺寸">${[['Desktop',1440],['Tablet',768],['Mobile',390]].map(([label,width])=>`<button data-width="${width}" aria-pressed="false">${label} ${width}</button>`).join('')}<span class="orientation-label">方向</span><button data-orientation="portrait" aria-pressed="false">Portrait 390 × 844</button><button data-orientation="landscape" aria-pressed="false">Landscape 844 × 390</button></div><label class="viewport-slider"><span>390</span><input type="range" min="390" max="1440" step="1" value="1440" aria-label="模拟视口宽度"><span>1440</span><output>1440 px</output></label><div class="current-rule"><span>CURRENT RULE</span><code></code><small></small></div><div class="viewport-window"><div class="viewport-chrome"><span>CAMPUSSCOPE / LIVE PREVIEW</span><span class="viewport-measure"></span></div><div class="viewport-scroll" tabindex="0" aria-label="真实尺寸预览，可横向和纵向滚动"><div class="viewport-page"><div id="responsive-dashboard"></div></div></div></div><p class="viewport-hint">画布保持真实像素宽度。超出窗口时横向滚动；布局随容器重排。</p></div><div id="layout-story"></div>`);
-  const product = dashboard('#responsive-dashboard', {compact:true,xray:false});
+  const product = dashboard('#responsive-dashboard', {compact:false,xray:false});
   const page = s.select('.viewport-page'), scroll = s.select('.viewport-scroll');
-  let currentHeight = null, frame = 0;
+  let currentHeight = null, frame = 0, flashTimer;
+  const orderButton = s.select('.viewport-toolbar').append('button')
+    .attr('class', 'reading-order-toggle').attr('aria-pressed', 'false').text('显示阅读顺序');
+  const path = s.select('.current-rule').append('p').attr('class', 'reading-path');
+  const probeNote = s.select('.current-rule').append('p').attr('class', 'probe-explanation')
+    .attr('role', 'status').property('hidden', true);
+  const orderNames = ['KPI', 'Overview', 'Detail', 'Records'];
+  d3.select(product.el).selectAll('[data-reading-order]').each(function () {
+    d3.select(this).insert('span', ':first-child').attr('class', 'reading-order-label')
+      .property('hidden', true).text(`${this.dataset.readingOrder} · ${orderNames[+this.dataset.readingOrder - 1]}`);
+  });
+  function showOrder(on) {
+    d3.select(product.el).classed('show-reading-order', on);
+    d3.select(product.el).selectAll('.reading-order-label').property('hidden', !on);
+    orderButton.attr('aria-pressed', String(on)).text(on ? '隐藏阅读顺序' : '显示阅读顺序');
+  }
+  orderButton.on('click.studio', function () { showOrder(this.getAttribute('aria-pressed') !== 'true'); });
   const countTracks = node => getComputedStyle(node).gridTemplateColumns.split(/\s+/).filter(Boolean).length;
   function measure() {
     cancelAnimationFrame(frame);
@@ -20,6 +36,7 @@ export function init65() {
       const rule = getComputedStyle(kpi).getPropertyValue('--studio-rule').trim().replaceAll('"','');
       s.select('.current-rule code').text(rule);
       s.select('.current-rule small').text(`实测内容宽 ${Math.round(el.clientWidth)} px · KPI ${columns} 列 · ${views === 1 ? '视图上下排列' : '视图并排'}`);
+      path.text(views === 1 ? 'READING PATH · ① 总量 ↓ ② 整体 ↓ ③ 细节 ↓ ④ 记录' : 'READING PATH · ① 总量 → ② 整体 ↔ ③ 细节 → ④ 记录');
       s.select('.viewport-measure').text(`${Math.round(page.node().getBoundingClientRect().width)} × ${currentHeight || 'auto'} px`);
     });
   }
@@ -39,10 +56,25 @@ export function init65() {
   s.selectAll('[data-width]').on('click.studio',function(){widthChange(this.dataset.width)});
   s.selectAll('[data-orientation]').on('click.studio',function(){const portrait=this.dataset.orientation==='portrait';widthChange(portrait?390:844,portrait?844:390,this.dataset.orientation)});
   s.select('input').on('input.studio',function(){widthChange(this.value)});
+  function handleProbe(event) {
+    const {lesson, probe} = event.detail || {};
+    if (lesson !== '65' || !['container', 'resize'].includes(probe)) return;
+    widthChange(probe === 'container' ? 768 : 390);
+    showOrder(true);
+    probeNote.property('hidden', false).text(probe === 'container'
+      ? '@container：预览宽度切到 768 px；下方规则与阅读路径来自实际计算样式。'
+      : 'ResizeObserver：预览宽度切到 390 px，SVG 重新测量容器并绘制；拖动宽度滑杆继续观察。');
+    s.selectAll('.probe-flash').classed('probe-flash', false);
+    clearTimeout(flashTimer);
+    const target = s.select(probe === 'container' ? '.current-rule' : '.overview-treemap');
+    target.classed('probe-flash', true);
+    flashTimer = setTimeout(() => target.classed('probe-flash', false), 900);
+  }
+  window.addEventListener('lesson-probe', handleProbe);
   const ro = new ResizeObserver(measure);
   ro.observe(s.select('#responsive-dashboard').node());
   ro.observe(s.select('.dashboard-kpis').node());
   widthChange(1440);
   const story = initStory('#layout-story');
-  return {destroy:cleanupWith(()=>{ro.disconnect();cancelAnimationFrame(frame);s.selectAll('button,input').on('.studio',null);product.destroy?.();story.destroy();})};
+  return {destroy:cleanupWith(()=>{ro.disconnect();cancelAnimationFrame(frame);clearTimeout(flashTimer);window.removeEventListener('lesson-probe',handleProbe);s.selectAll('button,input').on('.studio',null);product.destroy?.();story.destroy();})};
 }

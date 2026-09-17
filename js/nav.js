@@ -1,4 +1,4 @@
-import { cleanupWith } from './lifecycle.js?v=2';
+import { cleanupWith } from './lifecycle.js?v=3';
 export function initNav() {
   const nav=document.querySelector('#chapter-nav'), links=[...nav.querySelectorAll('a')];
   const sections=links.map(a=>document.querySelector(a.hash));
