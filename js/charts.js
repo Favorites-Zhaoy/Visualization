@@ -1,19 +1,22 @@
+import { ageChart } from "./age-chart.js?v=2";
+import { cleanupWith } from "./lifecycle.js?v=2";
 import {
   state,
   classCounts,
   color,
   duration,
   selectedRows,
+  classRows,
   kpis,
   classNames,
   dispatch,
-} from "./data.js";
+} from "./data.js?v=2";
 
-export function drawKpis(host, rows = state.students) {
+export function drawKpis(host, rows = state.students, product = false) {
   const sel = d3
     .select(host)
     .selectAll("article.kpi")
-    .data(kpis(rows), (d) => d.label)
+    .data(kpis(rows).filter(d=>!product || d.label !== "男生比例"), (d) => d.label)
     .join("article")
     .attr("class", "kpi")
     .style("--span", (d) => d.span);
@@ -38,7 +41,7 @@ export function treemap(host, options = {}) {
     selection = null,
     width = 0;
   function render(animate = true) {
-    const w = el.getBoundingClientRect().width;
+    const w = el.clientWidth;
     if (w < 1) return;
     width = w;
     const h =
@@ -111,7 +114,7 @@ export function treemap(host, options = {}) {
           ? d3.interpolateRgb(color(d.data.name), "#ffffff")(0.67)
           : color(d.data.name),
       )
-      .attr("stroke", (d) => (selection === d.data.name ? "#1e1b4b" : "white"))
+      .attr("stroke", (d) => (selection === d.data.name ? "#17352f" : "white"))
       .attr("stroke-width", (d) => (selection === d.data.name ? 4 : 2))
       .transition(t)
       .attr("width", (d) => d.x1 - d.x0)
@@ -149,6 +152,7 @@ export function treemap(host, options = {}) {
   const ro = new ResizeObserver(() => render(false));
   ro.observe(el);
   render(false);
+  const destroy = cleanupWith(() => { ro.disconnect(); svg.selectAll("*").interrupt(); });
   return {
     update(o = {}) {
       mode = o.mode ?? mode;
@@ -160,9 +164,7 @@ export function treemap(host, options = {}) {
     get width() {
       return width;
     },
-    destroy() {
-      ro.disconnect();
-    },
+    destroy,
   };
 }
 
@@ -238,8 +240,8 @@ export function histogram(host, rows = state.students, highlight = false) {
     .attr("rx", 3)
     .attr("fill", (d) =>
       highlight && ![18, 19].includes((d.x0 + d.x1) / 2)
-        ? "#d8dbe5"
-        : "#6366d7",
+        ? "#d4d9c6"
+        : "#315f55",
     )
     .transition()
     .duration(duration() / 2)
@@ -278,7 +280,9 @@ export function dashboard(host, { compact = false, xray = true } = {}) {
     .data(classCounts())
     .join("span")
     .html((d) => `<i style="background:${color(d.name)}"></i>${d.name}`);
+  const age = ageChart(s.select(".age-chart").node());
   function update() {
+    const baseRows = classRows();
     const rows = selectedRows(),
       n = rows.length,
       m = rows.filter((d) => d.gender === "男").length,
@@ -287,16 +291,16 @@ export function dashboard(host, { compact = false, xray = true } = {}) {
     s.selectAll("[data-mode]").attr("aria-pressed", function () {
       return this.dataset.mode === state.viewMode;
     });
-    drawKpis(s.select(".dashboard-kpis").node());
+    drawKpis(s.select(".dashboard-kpis").node(), state.students, true);
     s.select(".selected-title").text(state.selectedClass || "全体新生");
     s.select(".total-badge").text(state.students.length + " 人");
     s.select(".detail-stats").html(
-      `<div><b>${n}<small> 人</small></b><span>当前人数</span></div><div><b>${mean?.toFixed(1) || "—"}</b><span>平均模拟录取分数</span></div>`,
+      `<div><b>${n}<small> / ${baseRows.length} 人</small></b><span>筛选人数 / 班级人数</span></div><div><b>${mean?.toFixed(1) || "—"}</b><span>平均模拟录取分数</span></div>`,
     );
     s.select(".gender").html(
-      `<div class="gender-label"><span>男 ${m} 人 · ${d3.format(".1%")(m / n)}</span><span>女 ${n - m} 人 · ${d3.format(".1%")((n - m) / n)}</span></div><div class="gender-track" role="img" aria-label="男${m}人，女${n - m}人"><span style="width:${(m / n) * 100}%"></span></div>`,
+      `<div class="gender-label"><span>男 ${m} 人 · ${(n ? d3.format(".1%")(m / n) : "—")}</span><span>女 ${n - m} 人 · ${(n ? d3.format(".1%")((n - m) / n) : "—")}</span></div><div class="gender-track" role="img" aria-label="男${m}人，女${n - m}人"><span style="width:${n ? (m / n) * 100 : 0}%"></span></div>`,
     );
-    histogram(s.select(".age-chart").node(), rows);
+    age.update(baseRows);
     const ints = ["前端开发", "数据分析", "人工智能", "视觉设计"].map(
       (name) => ({
         name,
@@ -310,7 +314,7 @@ export function dashboard(host, { compact = false, xray = true } = {}) {
       .attr("class", "interest-row")
       .html(
         (d) =>
-          `<span>${d.name}</span><div><i style="width:${(d.count / n) * 100}%"></i></div><b>${d.count}</b>`,
+          `<span>${d.name}</span><div><i style="width:${n ? (d.count / n) * 100 : 0}%"></i></div><b>${d.count}</b>`,
       );
     s.select("tbody")
       .selectAll("tr")
@@ -328,7 +332,7 @@ export function dashboard(host, { compact = false, xray = true } = {}) {
       ])
       .join("td")
       .text((d) => d);
-    s.select(".list-count").text(`${n} 条记录 / ${state.students.length} 人`);
+    s.select(".list-count").text(`${n} 条记录 / 当前班级 ${baseRows.length} 人`);
     const focused = state.viewMode === "focus-context";
     s.select(".mode-note").text(
       focused
@@ -338,10 +342,13 @@ export function dashboard(host, { compact = false, xray = true } = {}) {
     s.select(".chart-tooltip").text(
       state.selectedClass
         ? `已选择 ${state.selectedClass} · ${n} 人；详情、图表和列表已同步。`
-        : "当前查看全体新生；点击班级进入详情。",
+        : `全体新生 · 当前筛选 ${n} / ${baseRows.length} 人`,
     );
     tree.update({ focus: focused, selected: state.selectedClass });
   }
+  s.select(".student-panel").append("p").attr("class","empty-records").attr("role","status").text("当前条件下没有学生记录，请调整年龄或清除筛选。");
+  const originalUpdate = update;
+  function updateAll() { originalUpdate(); s.select(".empty-records").property("hidden", selectedRows().length > 0); }
   s.select("select").on("change", function () {
     dispatch.call("selectClass", null, this.value || null);
   });
@@ -349,23 +356,19 @@ export function dashboard(host, { compact = false, xray = true } = {}) {
     dispatch.call("viewMode", null, this.dataset.mode);
   });
   s.select(".reset").on("click", () => {
+    dispatch.call("ageRange", null, null);
     dispatch.call("viewMode", null, "overview-detail");
     dispatch.call("selectClass", null, null);
   });
-  dispatch.on("selectClass." + id, update).on("viewMode." + id, update);
-  if (xray)
-    setupXray(
-      el,
-      s.select(".xray-toggle").node(),
-      s.select(".xray-readout").node(),
-    );
-  const ro = new ResizeObserver(() => {
-    if (el.getBoundingClientRect().width > 0)
-      histogram(s.select(".age-chart").node(), selectedRows());
+  dispatch.on("selectClass." + id, updateAll).on("viewMode." + id, updateAll).on("ageRange." + id, updateAll);
+  const xr = xray ? setupXray(el,s.select(".xray-toggle").node(),s.select(".xray-readout").node()) : null;
+  updateAll();
+  const destroy = cleanupWith(()=>{
+    dispatch.on("selectClass."+id,null).on("viewMode."+id,null).on("ageRange."+id,null);
+    age.destroy();tree.destroy();xr?.destroy();
+    s.selectAll("button,select").on("click",null).on("change",null);
   });
-  ro.observe(el);
-  update();
-  return { update, tree, el };
+  return { update:updateAll, tree, el, destroy };
 }
 
 export function setupXray(root, button, readout) {
@@ -377,6 +380,7 @@ export function setupXray(root, button, readout) {
       p = getComputedStyle(current).padding;
     readout.textContent = `${current.dataset.region} | x: ${b.x.toFixed(0)} · y: ${b.y.toFixed(0)} · width: ${b.width.toFixed(0)} · height: ${b.height.toFixed(0)} · padding: ${p}（px，相对视口）`;
   }
+  const controller = new AbortController();
   button.addEventListener("click", () => {
     active = !active;
     root.classList.toggle("xray-on", active);
@@ -386,24 +390,25 @@ export function setupXray(root, button, readout) {
       .querySelectorAll("[data-region]")
       .forEach((e) => (e.tabIndex = active ? 0 : -1));
     measure();
-  });
+  }, {signal:controller.signal});
   root.querySelectorAll("[data-region]").forEach((e) => {
     for (const name of ["pointerenter", "click", "focus"])
       e.addEventListener(name, () => {
         current = e;
         measure();
-      });
+      }, {signal:controller.signal});
   });
   const ro = new ResizeObserver(measure);
   ro.observe(root);
-  window.addEventListener("scroll", measure, { passive: true });
-  window.addEventListener("resize", measure);
-  return { measure };
+  window.addEventListener("scroll", measure, { passive: true, signal:controller.signal });
+  window.addEventListener("resize", measure, {signal:controller.signal});
+  const destroy=cleanupWith(()=>{ro.disconnect();controller.abort();});
+  return { measure, destroy };
 }
 
 export function diagram(svg, type, after = true) {
   svg.attr("viewBox", "0 0 300 100").attr("role", "img");
-  const palette = ["#9c99e4", "#76acb6", "#d4b27d", "#d89aac"];
+  const palette = ["#315f55", "#aeb67b", "#91a5a1", "#c1ad89"];
   let rects = [];
   if (type === 1) {
     rects = after

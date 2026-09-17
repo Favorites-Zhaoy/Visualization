@@ -3,7 +3,7 @@ export const lessons = [
     id: "lesson61",
     no: "6.1",
     short: "页面骨架",
-    title: "网页不是一堆 <div>",
+    title: "页面不是一堆 <div>",
     subtitle: "从散乱元素到清晰的信息层级",
     tags: ["Visual Hierarchy", "Box Model", "Flexbox"],
     question: "80 人、年龄图、学生列表都放上去了，为什么还是看不懂？",
@@ -26,37 +26,38 @@ export const lessons = [
         "若区域内容宽 240px，左右 padding 各 24px，边框各 1px，默认总宽是 290px。使用 border-box 后，设定的宽度包含 padding 和 border；文字仍需要内部留白。",
       ],
       [
-        "Flexbox：把一组信息排成一队",
-        "KPI 行使用 display:flex、gap 和 flex-wrap。空间不足时让卡片换行，而不是让五个数字越挤越小。Flex 适合一维排列；下一节再处理跨行跨列。",
+        "从平面到层级：看见网页的叠放顺序",
+        "Normal 呈现阅读顺序，X-Ray 显示真实盒子；Exploded 3D 把网格、区域、图形、标签与浮层沿 z 轴分开。3D 用来解释层级，不用来编码人数。",
       ],
     ],
     challenge:
-      "打开 X-Ray，点击 Main View，再调节内边距。观察内容区域缩小了，外部宽度为什么可以保持不变？",
-    code: `// 数据生成内容，CSS 决定区域排版
-const summary = [
-  { label: "总人数", value: students.length },
-  { label: "平均年龄", value: d3.mean(students, d => d.age) }
-];
-d3.select(".skeleton-kpis").selectAll("article")
-  .data(summary, d => d.label).join("article")
-  .text(d => d.label + "：" + d.value);
-
-// 点击区域时测量实际布局（相对视口）
+      "先在 X-Ray 选择 Main 并调节内边距；再打开 Exploded 3D，用拖动或旋转按钮分辨网格、区域、图形、标签与浮层。",
+    code: `// X-Ray 读取真实盒子，坐标相对视口
 const box = element.getBoundingClientRect();
 const padding = getComputedStyle(element).padding;
-console.log(box.x, box.y, box.width, box.height, padding);
 
-/* CSS：让浏览器完成盒模型与排版 */
+// D3 绑定五层；CSS 负责空间叠放
+const layers = [0, 40, 80, 120, 160];
+d3.select(".exploded-stack").selectAll(".exploded-layer")
+  .data(layers).join("div").attr("class", "exploded-layer")
+  .style("--z", d => d + "px");
+// 拖动和方向按钮共用旋转函数，限制视角
+rx = Math.max(-25, Math.min(25, rx));
+ry = Math.max(-35, Math.min(35, ry));
+stack.style("transform", "rotateX(" + rx + "deg) rotateY(" + ry + "deg)");
+
+/* CSS：盒模型与层级各司其职 */
 * { box-sizing: border-box; }
-.skeleton-kpis { display: flex; gap: 12px; flex-wrap: wrap; }
-.skeleton-kpis article { flex: 1 1 100px; padding: 16px; }`,
-    note: "getBoundingClientRect() 的 x/y 相对当前视口，滚动后会改变。padding 来自计算样式，不能从矩形宽度猜测。D3 负责生成卡片内容，CSS 负责它们的大小与换行。",
+.exploded-scene { perspective: 1200px; }
+.exploded-stack { transform-style: preserve-3d; }
+.exploded-layer { transform: translateZ(var(--z)); }`,
+    note: "X-Ray 测量当前平面布局；Exploded 是五层结构示意，不是浏览器真实 z 坐标。鼠标拖动与方向按钮共用有限旋转，Reset View 可回到初始视角。",
   },
   {
     id: "lesson62",
     no: "6.2",
     short: "网格布局",
-    title: "网格建立阅读秩序",
+    title: "网格不是为了整齐",
     subtitle: "为什么“对齐”比“装饰”更重要",
     tags: ["12 Columns", "Alignment", "Data Join"],
     question: "同样五张 KPI 卡片，为什么一种布局要找半天，另一种一眼就能扫完？",
@@ -76,42 +77,45 @@ console.log(box.x, box.y, box.width, box.height, padding);
       ],
       [
         "12 列：给布局一把公共尺子",
-        "跨度 3 + 2 + 3 + 2 + 2 = 12。总人数和平均年龄各占3列，其他各占2列。所有卡片对齐同一套列线；gap 是卡片间距，不是第13列。",
+        "默认跨度3+2+3+2+2=12，正好一行。把平均年龄改为 span 6，总跨度变成15，后面的卡片会换行；背景列线仍是12列，gap 不算额外一列。",
       ],
       [
         "Data Join：让卡片跟着数据生长",
-        "把五个指标存成数组，D3 的 join 为每个对象生成 article。用 label 作 key，更新时就能识别“平均年龄”仍然是同一张卡，避免无意义重建。",
+        "用 label 作 key，四种布局共享同一批 article。切换时先记录旧位置，让 CSS 完成新布局，再用 D3 把位移归零；你能一路认出“平均年龄”，而不是看到一套新卡片。",
       ],
     ],
     challenge:
-      "依次切换四种布局。再改变 gap：空隙增加时，卡片会变窄，但 12 列总宽仍然固定。",
-    code: `const kpis = [
-  { label: "总人数", value: students.length, span: 3 },
-  { label: "班级数", value: new Set(students.map(d => d.class_name)).size, span: 2 },
-  { label: "平均年龄", value: d3.mean(students, d => d.age).toFixed(1), span: 3 },
-  { label: "男生比例", value: d3.format(".1%")(
-      students.filter(d => d.gender === "男").length / students.length), span: 2 },
-  { label: "省份", value: new Set(students.map(d => d.province)).size, span: 2 }
-];
-d3.select(".kpi-grid").selectAll(".kpi")
+      "在四种布局间切换，追踪同一张“平均年龄”。把 gap 从8调到40，再把它的跨度从3改到6：哪些卡片换了行？",
+    code: `const cards = d3.select(".kpi-grid").selectAll(".kpi")
   .data(kpis, d => d.label).join("article")
-  .attr("class", "kpi")
-  .style("--span", d => d.span)
-  .text(d => d.label + "：" + d.value);
+  .attr("class", "kpi").style("--span", d => d.span);
+// 控件改变 CSS；同一批卡片保持不变
+stage.style("--grid-gap", gap + "px"); // 8–40
+cards.filter(d => d.label === "平均年龄")
+  .style("--span", span); // 2、3、4、6
+
+// FLIP：旧位置 → 新布局 → 位移归零（核心片段）
+const before = card.getBoundingClientRect();
+changeLayout();
+const after = card.getBoundingClientRect();
+d3.select(card)
+  .style("transform", "translate(" + (before.x-after.x) + "px," +
+    (before.y-after.y) + "px)")
+  .transition().duration(600).style("transform", "translate(0px,0px)");
 
 .kpi-grid {
   display: grid;
   grid-template-columns: repeat(12, minmax(0, 1fr));
-  gap: 16px;
+  gap: var(--grid-gap, 16px);
 }
 .kpi { grid-column: span var(--span); }`,
-    note: "minmax(0, 1fr) 允许网格列缩到内容固有宽度以下，避免长文本撑破容器。span 是布局元数据；具体坐标交给 CSS Grid，不用 D3 手工计算整个网页的位置。",
+    note: "完整演示的 FLIP 同时插值位移和缩放。gap 与 span 都交给 CSS；D3 只保持卡片身份并解释变化。开启减少动态效果时跳过过渡。",
   },
   {
     id: "lesson63",
     no: "6.3",
     short: "数据驱动布局",
-    title: "数据也可以决定页面面积",
+    title: "空间为什么一定要平均分？",
     subtitle: "从 Equal Grid 到 Treemap",
     tags: ["d3.hierarchy", "d3.treemap", "Transition"],
     question: "26 人的班与 14 人的班，为什么要占据相同的页面面积？",
@@ -131,7 +135,7 @@ d3.select(".kpi-grid").selectAll(".kpi")
       ],
       [
         "连续变形：别让读者丢掉目标",
-        "切换前后保留班级颜色与 key，用800ms过渡展示同一个矩形如何移动和变形。动画说明对应关系，不是为了让页面一直动。",
+        "将滑块停在50%，观察同一班级的四条边如何移动。t=0 是等分，t=1 是人数布局；中间状态只解释变化过程，不应当作人数比例读取。People 模式把80名学生显示为80个点。",
       ],
       [
         "何时不用 Treemap？",
@@ -139,27 +143,29 @@ d3.select(".kpi-grid").selectAll(".kpi")
       ],
     ],
     challenge:
-      "先猜最大的班占多少，再切到 Data Layout。观察26人区域与14人区域；比较它们的面积，而不只是宽度。",
-    code: `const classCounts = d3.rollups(students,
-  rows => rows.length, d => d.class_name);
-const root = d3.hierarchy({
-  name: "students",
-  children: classCounts.map(([name, value]) => ({ name, value }))
-}).sum(d => d.value || 0);
+      "将滑块停在0%、50%、100%，再打开 People。点的总数是否变化？用右侧共同基线的条形图核对26人与14人的差距。",
+    code: `const counts = d3.rollups(students, rows => rows.length,
+  d => d.class_name).map(([name, value]) => ({name, value}));
+const root = d3.hierarchy({children: counts}).sum(d => d.value || 0);
+d3.treemap().size([width, height]).paddingInner(3)(root);
 
-d3.treemap().size([width, height]).paddingInner(0)(root);
+// t 来自0–1滑块；equal 与 target 保存同一班的两套坐标
+const frame = {
+  x: d3.interpolateNumber(equal.x, target.x0)(t),
+  y: d3.interpolateNumber(equal.y, target.y0)(t),
+  w: d3.interpolateNumber(equal.w, target.x1-target.x0)(t),
+  h: d3.interpolateNumber(equal.h, target.y1-target.y0)(t)
+};
+cell.attr("transform", "translate(" + frame.x + "," + frame.y + ")");
+cell.select("rect").attr("width", frame.w).attr("height", frame.h);
 
-const cells = svg.selectAll("g.cell")
-  .data(root.leaves(), d => d.data.name).join("g")
-  .attr("class", "cell");
-cells.transition().duration(800).ease(d3.easeCubicInOut)
-  .attr("transform", d => 
-    "translate(" + d.x0 + "," + d.y0 + ")");
-cells.selectAll("rect").data(d => [d]).join("rect")
-  .transition().duration(800)
-  .attr("width", d => d.x1 - d.x0)
-  .attr("height", d => d.y1 - d.y0);`,
-    note: "本实验使用无间隙的布局矩形，细描边只帮助区分边界。若使用 paddingInner(6)，可见色块面积就只是近似比例。尊重 prefers-reduced-motion 时，将过渡时长设为0。",
+// People 模式：仍是原来的80行，按班级放入对应矩形
+const dots = svg.selectAll("circle").data(students, d => d.student_id)
+  .join("circle");
+dots.attr("cx", d => pointPositions.get(d.student_id).x)
+  .attr("cy", d => pointPositions.get(d.student_id).y)
+  .attr("opacity", people ? 1 : 0);`,
+    note: "3px 间隙让可见面积成为近似比例，精确人数请看标签和基准条。滑块中间状态不是新的数据；People 模式始终绑定原80行，不生成新学生。",
   },
   {
     id: "lesson64",
@@ -170,8 +176,8 @@ cells.selectAll("rect").data(d => [d]).join("rect")
     tags: ["Linked Views", "d3.dispatch", "Focus + Context"],
     question: "选中数据科学1班后，怎样既看清这个班，又不忘它在全体中的位置？",
     before: "图表各自为政，选了班级，右侧数字却没有变化。",
-    after: "一次选择，同步更新年龄、性别、兴趣与学生列表。",
-    summary: "多视图共享状态、共同回答问题，才真正形成 Coordinated Views。",
+    after: "选择班级，再框选年龄；详情与列表同步缩小，总览仍保留全体。",
+    summary: "多个视图共享一个状态，才能共同回答问题。",
     intro:
       "现在你想知道：数据科学1班有多少人？年龄集中在哪？兴趣是否都相同？左边的 Treemap 保留全体4个班，右边用同一份筛选结果回答这些局部问题。它们之间的“联动”比图表数量更重要。",
     concepts: [
@@ -181,7 +187,7 @@ cells.selectAll("rect").data(d => [d]).join("rect")
       ],
       [
         "共享状态：一个选择，多个订阅者",
-        "selectedClass 保存当前班级。d3.dispatch 广播 selectClass 事件；统计、年龄图、兴趣图和列表都监听它。这样不需要各个图互相调用，避免更新遗漏。",
+        "selectedClass 保存班级，ageRange 保存年龄区间。选择软件工程1班后，再框选18–19岁：详情显示筛选人数 / 26人，性别、兴趣和列表共享这份结果。清除年龄后恢复26人。",
       ],
       [
         "Focus + Context：放大但不消失",
@@ -189,52 +195,54 @@ cells.selectAll("rect").data(d => [d]).join("rect")
       ],
       [
         "比较要公平：保持共同坐标",
-        "年龄图使用17、18、19、20四个整数中心的箱子，纵轴上限固定为全体峰值。切换班级时，同样高的柱子仍然代表同样多的人，避免自动缩放带来错觉。",
+        "年龄图始终展示当前班级的全部学生，纵轴按全体峰值固定。刷选18–19岁只改变详情和高亮，不重新缩放年龄图；否则“筛选之后的分布”会失去比较背景。",
       ],
     ],
     challenge:
-      "选中任一班级，核对人数、性别总数、年龄柱之和与列表条数。再切 Focus + Context：其余班级仍能被点击吗？",
-    code: `const state = { selectedClass: null };
-const dispatch = d3.dispatch("selectClass");
-const selectedRows = () => students.filter(d =>
+      "选择软件工程1班，再框选或输入18–19岁。核对详情、性别与列表人数；年龄柱之和仍为26。清除年龄后切关注模式，其余班级还可选吗？",
+    code: `const state = { selectedClass: null, ageRange: null };
+const dispatch = d3.dispatch("selectClass", "ageRange");
+const classRows = () => students.filter(d =>
   !state.selectedClass || d.class_name === state.selectedClass);
+const selectedRows = () => classRows().filter(d => !state.ageRange ||
+  (d.age >= state.ageRange[0] && d.age <= state.ageRange[1]));
+dispatch.on("selectClass.state", name => { state.selectedClass = name; });
+dispatch.on("ageRange.state", range => { state.ageRange = range; });
+function update() {
+  updateAgeChart(classRows()); // 留住当前班级的分布背景
+  updateDetail(selectedRows()); // 统计、兴趣、列表共用筛选结果
+}
+dispatch.on("selectClass.detail", update).on("ageRange.detail", update);
 
-dispatch.on("selectClass.state", name => {
-  state.selectedClass = name;
+const brush = d3.brushX().on("end", event => {
+  if (!event.sourceEvent) return; // 忽略 resize 后 brush.move 的同步事件
+  const range = event.selection ? event.selection.map(x.invert) : null;
+  dispatch.call("ageRange", null, range); // 实际界面将端点吸附到整数年龄
 });
-dispatch.on("selectClass.detail", () => updateDetail(selectedRows()));
-dispatch.on("selectClass.age", () => updateAgeChart(selectedRows()));
-dispatch.on("selectClass.gender", () => updateGenderChart(selectedRows()));
-dispatch.on("selectClass.list", () => updateStudentList(selectedRows()));
-
-cells.on("click", (event, d) => {
-  dispatch.call("selectClass", null, d.data.name);
-});
-// 列表与图形可订阅同一个事件，重置广播 null
-resetButton.on("click", () => dispatch.call("selectClass", null));`,
-    note: "dispatch 按注册顺序调用监听器，所以先更新状态，再重绘视图。所有数字从 selectedRows() 计算，不把26/22/18/14写死到详情中。关注模式的放大权重与真实人数应分开保存。",
+clearButton.on("click", () => dispatch.call("ageRange", null, null));`,
+    note: "先注册状态监听器，再注册视图更新。年龄图用 classRows()，详情用 selectedRows()；零结果显示空状态，不能计算0/0。程序调用 brush.move 时不再次广播，避免循环。",
   },
   {
     id: "lesson65",
     no: "6.5",
     short: "响应式叙事",
-    title: "页面会适应，也会讲故事",
+    title: "Responsive 不是缩小页面",
     subtitle: "Responsive Visual Story",
     tags: ["ResizeObserver", "Sticky", "Scrollytelling"],
     question: "从1440px桌面到390px手机，应该把一切缩小，还是重新组织阅读顺序？",
     before: "整个桌面按比例缩小，图表和文字在手机上无法读。",
     after: "KPI换行、整体与细节上下排列，故事按阅读进度展开。",
-    summary: "好的页面不仅适应屏幕，还能够控制信息出现的顺序。",
+    summary: "响应式设计不是缩放，而是重新组织信息。",
     intro:
-      "把桌面观察站塞进手机，五个指标和两栏图表会同时争夺390px。我们不缩小字体，而是改变信息的排队方式：先总量，再整体，再详情。接着，用滚动把同一个观察站变成四步数据故事。",
+      "把桌面观察站塞进手机，四个指标和两栏图表会同时争夺390px。我们不缩小字体，而是改变阅读顺序：先总量，再整体，再详情。接着，用滚动把同一份数据变成四步故事。",
     concepts: [
       [
         "响应式：重新组织，不是缩小截图",
-        "Desktop 同行显示5个KPI，整体与详情并排；Tablet 的KPI排两列，图表上下排；Mobile 每行一个KPI。阅读层级保留，空间结构改变。",
+        "Studio 中，宽容器同行显示4个KPI，图表并排；内容宽度不超过980px时改为2列KPI、图表上下排；不超过640px时KPI单列。断点响应可用空间，不响应设备名称。",
       ],
       [
         "容器宽度：比设备名称更可靠",
-        "Viewport Machine 改变的是内部容器的宽度。CSS container query 按容器宽度切换列数，ResizeObserver 用实际可用宽度重新计算 SVG 的布局。",
+        "切换 Portrait 390×844 与 Landscape 844×390，CURRENT RULE 读取真实内容宽度和计算后的列数。容器内边距也占空间，所以滑块数字不一定等于触发断点的内容宽度。",
       ],
       [
         "viewBox：坐标系与显示尺寸分离",
@@ -242,50 +250,57 @@ resetButton.on("click", () => dispatch.call("selectClass", null));`,
       ],
       [
         "滚动叙事：让视觉跟着问题走",
-        "视觉区sticky，文字按“整体→班级差异→年龄集中→进入班级”前进。IntersectionObserver 切换状态；反向滚动时也要回到对应步骤，不能只向前播放。",
+        "同一份数据依次成为80个点、班级面积、年龄焦点和班级详情。每次滚动都检查全部四步的位置，选离阅读线最近的一步；反向滚动或快速跳跃，也能回到正确画面。",
       ],
     ],
     challenge:
-      "把模拟宽度从1440拖到390，注意KPI与详情的重排。继续向下滚动，或点四个故事按钮，观察同一张图怎样逐步回答不同问题。",
+      "将宽度从1440拖到390，核对 CURRENT RULE 与实际列数；再切换横竖屏。向下、向上滚动四步故事，或使用步骤按钮，检查画面是否对应问题。",
     code: `// CSS 响应实际容器，而非假装改变浏览器宽度
-.viewport-page { container-type: inline-size; }
-@container (max-width: 900px) {
+#responsive-dashboard { container: studio / inline-size; }
+.dashboard-kpis { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+@container studio (max-width: 980px) {
   .dashboard-grid { grid-template-columns: 1fr; }
-  .dashboard-kpis { grid-template-columns: repeat(2, 1fr); }
+  .dashboard-kpis { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }
-@container (max-width: 520px) {
+@container studio (max-width: 640px) {
   .dashboard-kpis { grid-template-columns: 1fr; }
 }
 
-const observer = new ResizeObserver(entries => {
-  const width = entries[0].contentRect.width;
-  if (width > 0) render(width); // 重新计算坐标，保留字号
+const observer = new ResizeObserver(() => {
+  const width = container.clientWidth;
+  if (width > 0) render(width); // 重排 SVG 坐标，保留字号
+  const columns = getComputedStyle(kpiGrid).gridTemplateColumns;
+  showCurrentRule(width, columns); // 实测结果，不猜设备
 });
 observer.observe(container);
-svg.attr("viewBox", [0, 0, width, height]);
 
-const storyObserver = new IntersectionObserver(entries => {
-  entries.filter(e => e.isIntersecting).forEach(entry => {
-    renderStory(+entry.target.dataset.step);
+// 回调每次检查全部步骤，不把本批 entries 当成完整状态
+function readStep() {
+  const line = innerHeight * 0.48;
+  const distances = steps.map(el => {
+    const r = el.getBoundingClientRect();
+    return r.top <= line && r.bottom >= line ? 0 :
+      Math.min(Math.abs(r.top-line), Math.abs(r.bottom-line));
   });
-}, { rootMargin: "-25% 0px -35% 0px", threshold: 0 });
-document.querySelectorAll(".story-step").forEach(el => storyObserver.observe(el));`,
-    note: "本页大宽度预览使用可横向滚动的画布，显示真实1440px布局；不会把桌面画面缩小冒充手机。窄屏上故事图缩成适合视口的sticky区域，仍可用步骤按钮操作。",
+  renderStory(d3.minIndex(distances)); // 相同步骤直接返回
+}
+const storyObserver = new IntersectionObserver(scheduleReadStep);
+steps.forEach(el => storyObserver.observe(el));
+window.addEventListener("scroll", scheduleReadStep, {passive: true});
+// scheduleReadStep 用 requestAnimationFrame 合并滚动；销毁时解绑与 disconnect。`,
+    note: "Studio 保持真实像素宽度，超出窗口可以滚动；4步故事使用独立阅读状态，不改动产品筛选。Observer、滚动监听与动画帧在组件销毁时清理。",
   },
 ];
 
 export function buildCourse() {
   const cards = d3
     .select("#knowledge-cards")
-    .selectAll("a")
+    .selectAll("article")
     .data(lessons)
-    .join("a")
-    .attr("class", "knowledge-card")
-    .attr("href", (d) => "#" + d.id);
-  cards.html(
-    (d) =>
-      `<div class="card-art" data-art="${d.no}"></div><div class="card-body"><span class="card-number">${d.no} / KNOWLEDGE ${d.no.slice(-1)}</span><h3>${d.short}</h3><p>${d.subtitle}</p><div class="card-tags">${d.tags.map((t) => `<span>${t}</span>`).join("")}</div><div class="card-link">进入实验<span>↗</span></div></div>`,
-  );
+    .join("article")
+    .attr("class", "knowledge-card");
+  const verbs = ["EXPLODE", "SNAP", "MORPH", "LINK", "REFLOW"];
+  cards.html((d, i) => `<div class="card-art" data-art="${d.no}"></div><div class="card-body"><div class="card-topline"><span class="card-number">${d.no}</span><span class="card-verb">${verbs[i]}</span></div><h3>${d.short}</h3><p>${d.subtitle}</p><button class="card-preview" aria-label="预览${d.short}布局变化">播放变化 ↻</button><a class="card-link" href="#${d.id}">进入实验<span>↗</span></a></div>`);
   d3.select("#rail-links")
     .selectAll("a")
     .data(lessons)
@@ -302,7 +317,7 @@ export function buildCourse() {
   sections.each(function (d) {
     const s = d3.select(this);
     s.html(
-      `<div class="lesson-header"><div class="lesson-kicker"><b>${d.no}</b><span>TRANSFORMATION 0${d.no.slice(-1)} / ${d.subtitle}</span></div><h2></h2><p class="lesson-question">${d.question}</p></div><div class="compare"><div class="compare-item before"><div class="compare-label">BEFORE / 改变之前</div><svg aria-label="${d.short}改进前示意"></svg><p>${d.before}</p></div><div class="compare-item after"><div class="compare-label">AFTER / 改变之后</div><svg aria-label="${d.short}改进后示意"></svg><p>${d.after}</p></div></div><div class="tabs" role="tablist" aria-label="${d.no}学习内容">${["📖 讲解", "⌨ 关键代码", "▷ Demo"].map((t, i) => `<button role="tab" id="${d.id}-tab${i}" aria-controls="${d.id}-panel${i}" aria-selected="${i === 0}" tabindex="${i === 0 ? 0 : -1}" data-tab="${i}">${t}</button>`).join("")}</div><div class="tab-panel explanation" id="${d.id}-panel0" role="tabpanel" aria-labelledby="${d.id}-tab0"><h3>从一个真实的阅读问题出发</h3><p>${d.intro}</p><div class="concept-pairs">${d.concepts.map(([h, p]) => `<div class="concept"><h4>${h}</h4><p>${p}</p></div>`).join("")}</div><div class="try-box"><p><b>动手验证</b><br>${d.challenge}</p><button class="open-demo">打开本节 Demo →</button></div></div><div class="tab-panel code-panel" id="${d.id}-panel1" role="tabpanel" aria-labelledby="${d.id}-tab1" hidden><div class="code-heading"><span>关键片段 · ${d.no} / D3.js + CSS</span><button class="copy-code">复制代码</button></div><pre><code></code></pre><div class="code-note"><b>为什么这样写 / 易错点</b><br>${d.note}</div></div><div class="tab-panel demo-panel" id="${d.id}-panel2" role="tabpanel" aria-labelledby="${d.id}-tab2" hidden><p class="demo-guide">${d.challenge}</p><div id="demo${d.no.replace(".", "")}"></div></div><div class="lesson-summary"><span>本节带走</span>${d.summary}</div>`,
+      `<div class="lesson-header"><div class="lesson-kicker"><b>0${d.no.slice(-1)}</b><span>${d.short}</span></div><h2></h2><p class="lesson-question">${d.question}</p></div><div class="compare"><div class="compare-item before"><div class="compare-label">BEFORE / 改变之前</div><svg aria-label="${d.short}改进前示意"></svg><p>${d.before}</p></div><div class="compare-item after"><div class="compare-label">AFTER / 改变之后</div><svg aria-label="${d.short}改进后示意"></svg><p>${d.after}</p></div></div><div class="tabs" role="tablist" aria-label="${d.no}学习内容">${["📖 讲解", "⌨ 关键代码", "▷ Demo"].map((t, i) => `<button role="tab" id="${d.id}-tab${i}" aria-controls="${d.id}-panel${i}" aria-selected="${i === 0}" tabindex="${i === 0 ? 0 : -1}" data-tab="${i}">${t}</button>`).join("")}</div><div class="tab-panel explanation" id="${d.id}-panel0" role="tabpanel" aria-labelledby="${d.id}-tab0"><p>${d.intro}</p><div class="concept-pairs">${d.concepts.map(([h, p]) => `<div class="concept"><h4>${h}</h4><p>${p}</p></div>`).join("")}</div><button class="open-demo text-link">进入实验 →</button></div><div class="tab-panel code-panel" id="${d.id}-panel1" role="tabpanel" aria-labelledby="${d.id}-tab1" hidden><div class="code-heading"><span>关键片段 · ${d.no} / D3.js + CSS</span><button class="copy-code">复制代码</button></div><pre><code></code></pre><div class="code-note"><b>为什么这样写 / 易错点</b><br>${d.note}</div></div><div class="tab-panel demo-panel" id="${d.id}-panel2" role="tabpanel" aria-labelledby="${d.id}-tab2" hidden><p class="demo-guide">${d.challenge}</p><div id="demo${d.no.replace(".", "")}"></div></div><div class="lesson-summary"><span>TAKEAWAY</span>${d.summary}</div>`,
     );
     s.select(".lesson-header h2").text(d.title);
     const blocks = splitCode(d);

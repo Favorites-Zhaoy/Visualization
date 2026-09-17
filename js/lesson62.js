@@ -1,36 +1,18 @@
-import { drawKpis } from "./charts.js";
-export function init62() {
-  const s = d3.select("#demo62");
-  s.html(
-    `<div class="toolbar grid-buttons"><button data-mode="random" aria-pressed="false">A · Random</button><button data-mode="center" aria-pressed="false">B · Center</button><button data-mode="equal" aria-pressed="false">C · Equal Cards</button><button data-mode="grid" aria-pressed="true">D · 12-column Grid</button></div><div class="toolbar"><label class="slider-label">Gap <input type="range" min="4" max="24" value="16" aria-label="网格间距"><output>16px</output></label></div><div class="grid-stage"><div class="grid-lines" aria-label="12条网格列线"></div><div class="kpi-grid" data-mode="grid"></div></div><p class="grid-mode-explain"></p>`,
-  );
-  s.select(".grid-lines")
-    .selectAll("span")
-    .data(d3.range(1, 13))
-    .join("span")
-    .text((d) => d);
-  drawKpis(s.select(".kpi-grid").node());
-  const notes = {
-    random:
-      "A / 随意放置：数字没有共同基线，视线需要来回跳转。先找“平均年龄”，你看了几个位置？",
-    center:
-      "B / 全部居中：对称不等于高效。五张卡片排成长队，占据较多纵向空间。",
-    equal:
-      "C / 等宽卡片：建立共同基线，每张卡片获得同样空间。窄屏下换行，保持文字可读。",
-    grid: "D / 12列网格：3 + 2 + 3 + 2 + 2 = 12。较长内容获得更多空间；容器小于520px时重排为两列。",
-  };
-  s.select(".grid-mode-explain").text(notes.grid);
-  s.selectAll(".grid-buttons button").on("click", function () {
-    const mode = this.dataset.mode;
-    s.selectAll(".grid-buttons button").attr("aria-pressed", function () {
-      return this.dataset.mode === mode;
-    });
-    s.select(".kpi-grid").attr("data-mode", mode);
-    s.select(".grid-lines").style("opacity", mode === "grid" ? 1 : 0.25);
-    s.select(".grid-mode-explain").text(notes[mode]);
-  });
-  s.select("input").on("input", function () {
-    s.select(".grid-stage").style("--grid-gap", this.value + "px");
-    s.select("output").text(this.value + "px");
-  });
+import { drawKpis } from './charts.js?v=2';
+import { duration } from './data.js?v=2';
+import { cleanupWith } from './lifecycle.js?v=2';
+export function init62(){
+ const s=d3.select('#demo62');
+ s.html(`<div class="layout-lab"><aside class="layout-controls"><span class="lab-eyebrow">LAYOUT LAB</span><div class="grid-buttons"><button data-mode="random" aria-pressed="false">Random</button><button data-mode="center" aria-pressed="false">Center</button><button data-mode="equal" aria-pressed="false">Equal Cards</button><button data-mode="grid" aria-pressed="true">12-column Grid</button></div><label class="overlay-label"><input type="checkbox" id="grid-overlay" checked> 显示 12 列网格</label><label class="lab-field">Gap <input id="lab-gap" type="range" min="8" max="40" value="16" aria-label="网格间距"><output>16px</output></label><label class="lab-field">平均年龄占列 <select id="lab-span" aria-label="平均年龄卡片占列数"><option value="2">span 2</option><option value="3" selected>span 3</option><option value="4">span 4</option><option value="6">span 6</option></select></label><code class="live-grid-code" aria-live="polite"></code></aside><div class="layout-canvas"><div class="grid-stage"><div class="grid-lines" aria-label="12列网格参考线"></div><div class="kpi-grid" data-mode="grid"></div></div><p class="grid-mode-explain"></p></div></div>`);
+ s.select('.grid-lines').selectAll('span').data(d3.range(1,13)).join('span').text(d=>String(d).padStart(2,'0'));
+ drawKpis(s.select('.kpi-grid').node());
+ const cards=s.selectAll('.kpi'),grid=s.select('.kpi-grid');let mode='grid',gap=16,span=3;
+ const notes={random:'数字失去共同基线，找到“平均年龄”需要来回寻找。',center:'全部居中形成纵向队列：一张张读，很难横向比较。',equal:'等宽卡片建立共同基线，让五项指标平等地被看见。',grid:'12 列划分空间。扩大“平均年龄”，观察后面的卡片如何换行；窄屏可横向移动画布。'};
+ function code(){s.select('.live-grid-code').text(`gap: ${gap}px;\n${mode==='grid'?'grid-template-columns:\n  repeat(12, minmax(0, 1fr));\n.age { grid-column: span '+span+'; }':mode==='equal'?'grid-template-columns:\n  repeat(5, minmax(0, 1fr));':mode==='center'?'grid-template-columns: 1fr;\nmax-width: 240px;':'grid-template-columns:\n  repeat(6, minmax(0, 1fr));'}`);s.select('.grid-mode-explain').text(notes[mode]);s.select('#lab-span').property('disabled',mode!=='grid')}
+ function change(mutate,animate=true){cards.interrupt().style('transform',null);const before=new Map();cards.each(function(d){before.set(d.label,this.getBoundingClientRect())});mutate();code();cards.each(function(d){const a=before.get(d.label),b=this.getBoundingClientRect();if(!animate||!duration()||!b.width||!b.height)return;d3.select(this).style('transform-origin','0 0').style('transform',`translate(${a.x-b.x}px,${a.y-b.y}px) scale(${a.width/b.width},${a.height/b.height})`).transition().duration(600).ease(d3.easeCubicOut).styleTween('transform',function(){return d3.interpolateString(this.style.transform,'translate(0px,0px) scale(1,1)')}).on('end',function(){this.style.removeProperty('transform')})})}
+ s.selectAll('[data-mode]').filter('button').on('click.lab',function(){const value=this.dataset.mode;change(()=>{mode=value;grid.attr('data-mode',mode);s.selectAll('button[data-mode]').attr('aria-pressed',function(){return this.dataset.mode===mode})})});
+ s.select('#lab-gap').on('input.lab',function(){gap=+this.value;change(()=>{s.select('.grid-stage').style('--grid-gap',gap+'px');s.select('.lab-field output').text(gap+'px')},false)});
+ s.select('#lab-span').on('change.lab',function(){span=+this.value;change(()=>cards.filter(d=>d.label==='平均年龄').style('--span',span))});
+ s.select('#grid-overlay').on('change.lab',function(){s.select('.grid-lines').style('visibility',this.checked?'visible':'hidden')});code();
+ return cleanupWith(()=>{cards.interrupt();s.selectAll('*').on('.lab',null)});
 }
