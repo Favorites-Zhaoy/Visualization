@@ -1,75 +1,26 @@
 <!doctype html>
 <html lang="zh-CN">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width,initial-scale=1" />
-    <meta
-      name="description"
-      content="Lesson 06 网页页面布局：用80条虚构新生数据学习页面骨架、网格、D3 Treemap、多视图联动和响应式叙事。"
-    />
-    <title>Lesson 06 · 网页页面布局 | CampusScope</title>
-    <link rel="icon" href="favicon.svg" type="image/svg+xml" />
-    <link rel="stylesheet" href="css/tokens.css?v=3" />
-    <link rel="stylesheet" href="css/base.css?v=3" />
-    <link rel="stylesheet" href="css/course.css?v=3" />
-    <link rel="stylesheet" href="css/opening.css?v=3" />
-    <link rel="stylesheet" href="css/labs.css?v=3" />
-    <link rel="stylesheet" href="css/dashboard.css?v=3" />
-    <link rel="stylesheet" href="css/responsive.css?v=3" />
-    <script defer src="vendor/d3.v7.min.js"></script>
-    <script type="module" src="js/main.js?v=3"></script>
-  </head>
-  <body>
-    <a class="skip-link" href="#lesson61">跳到课程正文</a>
-    <header class="topbar">
-      <a class="brand" href="#home"><span class="brand-icon">▦</span><strong>可视化导论</strong><span class="brand-divider"></span><span>06</span></a>
-      <button class="mobile-progress" aria-expanded="false" aria-controls="chapter-nav"><span><b>06 / LESSON</b><small>网页页面布局</small></span><span class="menu-sign">＋</span></button>
-      <nav id="chapter-nav" class="chapter-nav" aria-label="章节进度">
-        <div class="nav-line" aria-hidden="true"><span></span></div>
-        <a href="#lesson61"><i></i><span>骨架</span></a><a href="#lesson62"><i></i><span>网格</span></a><a href="#lesson63"><i></i><span>数据</span></a><a href="#lesson64"><i></i><span>多视图</span></a><a href="#lesson65"><i></i><span>响应式</span></a><a href="#final"><i></i><span>CampusScope</span></a>
-      </nav>
-    </header>
-    <main id="home">
-      <section class="opening" id="opening" aria-label="翻开网页页面布局这一章">
-        <div class="opening-top"><span>LESSON 06</span><span>FROM DATA TO SPACE</span><button id="skip-opening">跳过动画 ↗</button></div>
-        <div class="opening-visual">
-          <div class="book-scene"><div class="book" id="course-book"><div class="book-page"><span>80 STUDENTS</span><strong>ONE DATASET<br>FIVE LAYOUTS</strong><span>数据 → 空间 → 页面</span></div><div class="book-cover"><img src="assets/images/visualization-introduction-cover.jpg" alt="陈为《可视化导论》教材封面" width="1360" height="1852" fetchpriority="high"></div></div></div>
-          <div id="opening-morph" aria-label="80名学生的布局变化"></div>
-          <div class="opening-stage-label" aria-live="polite"><span class="stage-en">OPEN A NEW PERSPECTIVE</span><p class="stage-zh">翻开一本书，也翻开一种看待空间的方式。</p></div>
-        </div>
-        <div class="opening-title"><p class="eyebrow">VISUALIZATION LAYOUT</p><h1>网页页面布局</h1><p class="opening-thesis">布局，本质上是在组织人的注意力。</p><p class="opening-english">Layout is the organization of attention.</p></div>
-        <div class="opening-actions"><button class="button primary" id="open-book">翻开这一章 <span>→</span></button><a class="button primary" id="explore-chapter" href="#chapter-map" hidden>开始探索 <span>↓</span></a><button id="replay-opening" hidden>重播开场 ↺</button></div>
-        <div class="opening-bottom"><span>一份数据</span><span>五次空间重组</span><span>一个完整的可视化网页</span></div>
-      </section>
-      <section class="wrap curriculum" id="chapter-map">
-        <div class="section-heading">
-          <div>
-            <p class="eyebrow">ONE DATASET · FIVE TRANSFORMATIONS</p>
-            <h2>一份数据，五次空间重组</h2>
-          </div>
-          <p>
-            从 <b>EXPLODE</b> 到 <b>REFLOW</b>，<br />观察同一份数据如何五次重组空间。
-          </p>
-        </div>
-        <div id="knowledge-cards" class="knowledge-cards"></div>
-      </section>
-      <div class="wrap course-layout">
-        <div id="lessons"></div>
-      </div>
-      <section id="final" class="wrap final-section">
-        <div class="section-heading">
-          <div>
-            <p class="eyebrow">CAMPUSSCOPE / 2026</p>
-            <h2>CampusScope<span class="year">2026</span></h2>
-            <p>2026 新生数据观察站</p>
-          </div>
-          <a class="text-link" href="data/students.csv" download>下载数据 ↓</a>
-        </div>
-        <div id="final-dashboard" class="dashboard-shell"></div>
-      </section>
-      <footer class="wrap footer">《可视化导论》 · Lesson 06 · D3.js · CampusScope · 教学数据均为虚构</footer>
-    </main>
-    <div id="load-error" role="alert" hidden></div>
-    <noscript>请启用 JavaScript，以运行 D3 布局实验。</noscript>
-  </body>
-</html>
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="description" content="VISUAL ATLAS — a bilingual D3.js course on web page layout. 15 artifacts, five layout decisions, one digital exhibition.">
+<title>VISUAL ATLAS · 网页页面布局</title><link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="css/atlas.css?v=atlas1"><link rel="stylesheet" href="css/atlas-opening.css?v=atlas1">
+<script defer src="vendor/d3.v7.min.js"></script><script type="module" src="js/atlas-main.js?v=atlas1"></script>
+</head>
+<body>
+<a class="skip-link" href="#lesson61" data-zh="跳到课程正文" data-en="Skip to the course">跳到课程正文</a>
+<header class="topbar"><a class="brand" href="#home" aria-label="VISUAL ATLAS"><span class="brand-symbol">▥</span> VISUAL ATLAS <sup>06</sup></a><nav class="chapter-nav" aria-label="Chapters"></nav><div class="language-switch" aria-label="Language"><button id="lang-zh" type="button" lang="zh-CN" aria-pressed="true">中</button><span>/</span><button id="lang-en" type="button" lang="en" aria-pressed="false">EN</button></div></header>
+<main id="home">
+<section class="hero" id="opening">
+<div class="hero-kicker"><span>AN EXHIBITION OF IDEAS</span><span data-zh="可视化导论 / 第六课" data-en="INTRODUCTION TO VISUALIZATION / LESSON 06"></span></div>
+<div class="hero-heading"><h1>VISUAL<br><span>ATLAS</span><i aria-hidden="true">↗</i></h1><div class="hero-intro"><span class="edition">VOL. 06 — WEB PAGE LAYOUT</span><h2 data-zh="让可视化，成为一张页面。" data-en="From visualization to page."></h2><p data-zh="15 件作品，5 次布局决策。从一本书出发，策划一场关于结构与秩序的数字展览。" data-en="15 artifacts. Five layout decisions. Open a book and curate a digital exhibition of structure and order."></p><a class="primary-link" href="#chapter-map" data-zh="进入这一课 ↓" data-en="Explore the lesson ↓"></a></div></div>
+<div class="opening-stage"><div class="book-display"><div class="book"><div class="book-pages"><small>15 VISUAL ARTIFACTS</small><strong>5 THEMES<br>ONE PAGE</strong></div><div class="book-cover"><img src="assets/images/visualization-introduction-cover.jpg" width="1360" height="1852" alt="《可视化导论》教材封面 / Introduction to Visualization textbook cover" fetchpriority="high"></div></div></div><div class="opening-canvas"><div class="opening-status"><span id="opening-word">BOOK → PAGE</span><span id="opening-count">00 / 07</span></div><div id="opening-artifacts"></div><p id="opening-caption" aria-live="polite"></p></div></div>
+<div class="opening-controls"><button id="opening-play" class="dark-button" data-zh="翻开 · 观看布局生长 ↗" data-en="Open the book · watch a page emerge ↗"></button><button id="opening-skip" data-zh="跳过开场 ↓" data-en="Skip opening ↓"></button><span data-zh="D3 驱动决策 · CSS 组织空间" data-en="D3 drives decisions · CSS composes space"></span></div>
+<div class="hero-footer"><span>15 ARTIFACTS</span><span>05 THEMES</span><span>01 COHERENT PAGE</span><span>SCROLL TO EXPLORE ↓</span></div>
+</section>
+<section id="chapter-map" class="chapter-map section-wrap"><div class="section-eyebrow"><span>THE CURATOR’S NOTE</span><span>01—05</span></div><div class="map-heading"><h2 data-zh="五种内容，&#10;一张页面。" data-en="Different ideas.&#10;One coherent page."></h2><p data-zh="图表画好以后，设计才刚刚开始。同一批作品，将经过五次空间重组。每一步，都回答一个真实的阅读问题。" data-en="Drawing the charts is only the beginning. Follow the same artifacts through five spatial transformations, each answering a concrete question about reading."></p></div><div id="map-cards"></div></section>
+<div id="lessons"></div>
+<section id="final" class="final-exhibition section-wrap"><div class="section-eyebrow"><span>THE FINISHED EXHIBITION</span><span>OPEN COLLECTION / 15</span></div><header class="exhibition-header" data-anatomy="HEADER"><h2>VISUAL<br>ATLAS<span>®</span></h2><div><p data-zh="可视化知识展厅" data-en="A digital exhibition of visualization ideas."></p><span data-zh="15 件作品 · 5 个主题 · 无限种阅读路径" data-en="15 artifacts · 5 themes · many paths through the page"></span></div></header><div id="final-controls" data-anatomy="INDEX"></div><div id="final-gallery" data-anatomy="GALLERY"></div><footer class="atlas-footer" data-anatomy="FOOTER"><p data-zh="所有微型数据均为合成教学数据，不代表真实测量、人物或机构。" data-en="All microdatasets are synthetic teaching data, not real measurements, people, or institutions."></p><details><summary data-zh="查看与下载教学数据" data-en="Explore and download teaching data"></summary><div id="data-links"></div></details></footer></section>
+<footer class="site-footer section-wrap"><a class="brand" href="#home">VISUAL ATLAS ↗</a><p data-zh="布局，是组织注意力的方式。" data-en="Layout is how we organize attention."></p><span>LESSON 06 / D3.JS + CSS GRID</span></footer>
+</main><div id="load-status" role="status"></div>
+</body></html>

@@ -1,8 +1,10 @@
-# Lesson 06 · CampusScope
+# VISUAL ATLAS · Lesson 06
 
-当前版本：网页页面布局 v3。使用教材原图与黄绿、灰、深绿色视觉系统，以同一份80名虚构学生数据贯穿五节。
+《可视化导论》数字展厅 / A digital exhibition of visualization ideas.
 
-## 在线页面
+15 件原创 D3 微型作品贯穿五个网页布局知识点：Structure → Align → Compose → Focus → Reflow。顶部「中 / EN」切换完整课程、展品说明、控件及可访问标签，不刷新页面。
+
+## 在线地址
 
 https://favorites-zhaoy.github.io/Visualization/
 
@@ -10,32 +12,52 @@ https://favorites-zhaoy.github.io/Visualization/
 
 `C:\Users\zhaoy\Documents\ChatGPT\可视化导论\Lesson06_CampusScope`
 
-在此目录运行 `python -m http.server 8080`，打开 http://localhost:8080/ 。请通过HTTP访问，避免直接打开HTML时浏览器阻止CSV读取。
+目录名沿用原项目，目录内只有当前 VISUAL ATLAS 版本。
 
-## 五个布局实验
+```powershell
+cd "C:\Users\zhaoy\Documents\ChatGPT\可视化导论\Lesson06_CampusScope"
+python -m http.server 8080
+```
 
-1. 页面骨架：Normal、真实尺寸X-Ray、五层3D展开与旋转。
-2. 网格：同一批KPI的FLIP转换、12列、8–40px间距、平均年龄跨度。
-3. 数据布局：Equal→Treemap连续变形、80个学生点与人数基准条。
-4. 多视图：班级选择、年龄Brush与数字输入、Focus + Context、联动详情。
-5. 响应式：390–1440px真实画布、横竖屏、实际容器规则、独立四步滚动故事。
+打开 http://localhost:8080/ 。必须通过 HTTP 访问，不能直接双击 HTML 加载数据。原生 HTML/CSS/JS + 本地 D3 v7，无构建步骤。字体使用 Google Fonts，可用系统字体回退。
 
-每节保留讲解、关键代码与Demo；静态对照图已改为简短的Problem Shift。
+## 课程与交互
 
-v3新增教学映射：代码按钮直接定位真实布局，6.2提供两轮各10秒的个人阅读体验，6.3明确区分变形中途与人数比例，筛选标签可分别清除班级与年龄，Responsive Studio展示阅读顺序，Final可揭示五个区域职责。
+- 开场：教材封面翻开，15 个不同的 D3 预览经过七种布局状态；支持重播、跳过和减少动态效果。
+- 6.1 Structure：平铺/五主题语义分组/X-Ray/可拖动的五层 3D 模型。
+- 6.2 Align：散落/松散对齐/等宽/模块网格；列辅助线、基线和 8–40px 真实间距。
+- 6.3 Compose：作品优先级与纵横比决定列跨度，信息密度影响预览高度。可选择作品并调整三级优先级。
+- 6.4 Focus：同一 keyed DOM 中放大焦点，保留其他作品为上下文；支持键盘与返回焦点。
+- 6.5 Reflow：390–1440px 画布；实际容器断点为 680/1100px，CSS 负责 4/8/12 列，D3 更新 DOM 顺序及预览细节。
+- Final：可筛选、原位聚焦、中英切换的完整展厅；包含布局骨架与数据下载。
 
-阅读体验只记录当前页面内的个人用时，不上传，也不作为正式实验数据。移动端故事在当前文字步骤下展示图表，避免遮挡正文。
+每节含讲解、三个具体例子、关键代码、Demo 与 Takeaway。代码面板为教学精简片段；运行实现位于 js/。
 
-样式按职责拆为tokens / base / course / opening / labs / dashboard / responsive七个文件；旧版覆盖样式已移除。
+## 数据
 
-## 数据与依赖
+全部为合成教学数据，不代表真实测量、人物、机构。固定种子 20260917。
 
-CSV与JSON沿用原文件，v3没有重新生成数据。页面仅加载一次CSV；所有交互从内存中的原数据计算。
-D3 v7.9.0本地位于 `vendor/`，无需CDN或构建步骤。原数据生成脚本仅作出处留存，不需要运行。
-封面位于 `assets/images/visualization-introduction-cover.jpg`，使用用户提供原图。
+```powershell
+node scripts/validate-visual-atlas-data.js
+# All VISUAL ATLAS data checks passed.
+```
 
-## 发布与文件
+`generate-visual-atlas-data.cjs` 可复现六份数据。15 件作品每课三件；实体30行、层次21节点、标量30行、点60行、时间序列144行。CVD 预览为配色与冗余编码比较，不是色觉缺陷模拟；Curve 展示已知生成模型与噪声观测；Storyline 是五轨迹构图示意，不是真实人物共现研究。
 
-GitHub Pages使用main分支根目录。index.html为唯一入口；css/、js/、data/、assets/、vendor/为当前网页资源。旧版不再提供独立页面，Git提交历史可追溯。
+## 文件组织
 
-课程结构参考 https://cinger007.github.io/vis/ 。教学数据均为虚构。
+- `index.html`：唯一页面入口。
+- `css/atlas.css`、`atlas-opening.css`：编辑式视觉系统、容器查询、开场布局。
+- `js/atlas-main.js`：五节课程及控件。
+- `js/atlas-gallery.js`：共享 keyed Data Join、CSS span、FLIP、筛选、焦点、ResizeObserver。
+- `js/atlas-content.js`：完整中英教学文本。
+- `js/atlas-state.js`：即时语言状态。
+- `js/preview-renderers.js`：15 种独立 D3 预览，三档细节。
+- `js/atlas-opening.js`：可取消/重播的开场。
+- `data/`：当前作品与教学微数据；`assets/`：用户提供的教材封面；`vendor/`：本地 D3 与许可证。
+
+## 历史版本
+
+CampusScope 最终版保存在 Git 标签 `campusscope-final`，对应提交 `079dede`。旧页面资源已移入本机回收站，发布目录中不保留旧版入口或学生数据。
+
+课程章节结构参考 https://cinger007.github.io/vis/ 。15 个微型可视化均为本项目重新制作，未复制教师页面截图或源码。
