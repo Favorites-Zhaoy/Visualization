@@ -1,0 +1,21 @@
+.week-schedule-svg{display:block;width:100%;height:auto;min-width:640px;overflow:visible;font-family:inherit}
+.week-schedule-svg.context-schedule{min-width:0}
+.week-schedule-svg.context-schedule text,.week-schedule-svg.context-schedule .session text,.week-schedule-svg.context-schedule .day-header text{font-size:11px}
+.week-schedule-svg.context-schedule .session-code{font-size:12px;letter-spacing:0}
+.week-schedule-svg text{pointer-events:none;fill:#183a2c;font-size:12px}
+.week-schedule-svg .day-header{cursor:pointer}
+.week-schedule-svg .day-header text{font-weight:650;font-size:13px}
+.week-schedule-svg .session{cursor:pointer;outline:none;transition:opacity 200ms}
+.week-schedule-svg .session text{fill:#fff;font-size:12px;font-weight:550}
+.week-schedule-svg .session-code{font-size:15px;font-weight:800;letter-spacing:.035em}
+.week-schedule-svg .session[data-session-id] .session-block{stroke:transparent;stroke-width:2}
+.week-schedule-svg .session.is-focus .session-block{stroke:#142f23;stroke-width:3;stroke-dasharray:none}
+.week-schedule-svg .session:focus-visible .session-block,.week-schedule-svg .session:hover .session-block{stroke:#111;stroke-width:3;stroke-dasharray:4 2}
+.week-schedule-svg .day-header:focus-visible rect{stroke:#142f23;stroke-width:3}
+.week-schedule-svg .session[data-course="CI"] text,.week-schedule-svg .session[data-course="NET"] text,.week-schedule-svg .session[data-course="VIS"] text,.week-schedule-svg .session[data-course="CV"] text{fill:#101d16}
+.week-bars{display:flex;flex-direction:column;gap:5px}
+.week-bar{display:grid;grid-template-columns:minmax(98px,1fr) minmax(65px,1fr) 38px;gap:12px;align-items:center;min-height:44px;width:100%;padding:8px;border:1px solid transparent;border-radius:5px;background:transparent;color:inherit;text-align:left;cursor:pointer;font:inherit}
+.week-bar:hover{background:#f0f3e9}.week-bar.is-selected{border-color:#607958;background:#f0f4e2}.week-bar:focus-visible{outline:3px solid #365c4b;outline-offset:2px}
+.week-bar-label{font-size:12px;line-height:1.4;overflow-wrap:anywhere}.week-bar-value{font-size:12px;font-variant-numeric:tabular-nums;text-align:right;white-space:nowrap}
+.week-bar-track{height:8px;background:#e6eae0;border-radius:2px;overflow:hidden}.week-bar-fill{display:block;height:100%;border-radius:2px;transition:width 380ms}
+@media(prefers-reduced-motion:reduce){.week-schedule-svg .session,.week-bar-fill{transition:none}}

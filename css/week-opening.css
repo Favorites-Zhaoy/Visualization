@@ -1,0 +1,21 @@
+/* The opening contains the same live WeekView used by the lesson and product. */
+#opening-preview{position:relative;width:100%;height:420px;overflow:hidden;border:1px solid var(--line,#cbd2cb);border-radius:16px;background:var(--paper,#f5f3ea);isolation:isolate;transition:opacity .55s ease}
+#opening-preview[data-stage=rest]{opacity:.18}
+.opening-mini-frame{position:absolute;width:1140px;transform-origin:top left;overflow:hidden;pointer-events:none;background:var(--paper,#f5f3ea)}
+.opening-mini-frame .week-shell{border-radius:10px}
+.opening-mini-frame .week-page{min-height:0}
+.opening-mini-frame .week-region{min-width:0}
+.opening-mini-frame .week-source{display:none}
+#opening-preview[data-stage=raw] .week-region:not(.week-overview){display:none}
+#opening-preview[data-stage=raw] .week-overview{grid-column:1/-1!important}
+#opening-preview[data-stage=raw] .week-page{display:block}
+#opening-preview[data-stage=raw] .course-legend{display:none}
+#opening-preview[data-stage=structure] .week-region{outline:2px dashed #174d3970;outline-offset:-4px}
+#opening-preview[data-stage=reflow] .opening-mini-frame{border:7px solid var(--ink,#10251d);border-radius:27px;box-shadow:0 14px 30px #10251d20}
+#opening-preview[data-stage=reflow] .week-shell{border-radius:20px}
+.book{transform-style:preserve-3d;perspective:1400px}
+.book .book-cover{transform-origin:left center;backface-visibility:hidden;transition:transform .9s cubic-bezier(.2,.7,.2,1),filter .9s;position:relative;z-index:2}
+.book.is-open .book-cover{transform:rotateY(-154deg);filter:brightness(.83)}
+.book .book-pages{background:repeating-linear-gradient(90deg,#fffdf7 0 3px,#dedfd7 3px 4px);border-radius:2px 9px 9px 2px}
+@media(max-width:600px){#opening-preview{height:340px}}
+@media(prefers-reduced-motion:reduce){#opening-preview,.book .book-cover{transition:none!important}}

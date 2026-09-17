@@ -1,63 +1,63 @@
-# VISUAL ATLAS · Lesson 06
+# MY WEEK · Lesson 06 网页页面布局
 
-《可视化导论》数字展厅 / A digital exhibition of visualization ideas.
+同一份课表，在不同阅读任务和屏幕上，需要不同的空间组织。
 
-15 件原创 D3 微型作品贯穿五个网页布局知识点：Structure → Align → Compose → Focus → Reflow。顶部「中 / EN」切换完整课程、展品说明、控件及可访问标签，不刷新页面。
+本版按用户指定，恢复「80个学生」版本 `campusscope-final` 的课程外壳：浅黄绿色封面、居中教材、翻书开场、圆点章节导航、五张示意图入口、讲解／关键代码／Demo。课堂案例替换为 MY WEEK，未恢复旧学生数据或数字展厅。
 
-## 在线地址
+## 在线与本机
 
 https://favorites-zhaoy.github.io/Visualization/
 
-## 本机项目地址
-
-`C:\Users\zhaoy\Documents\ChatGPT\可视化导论\Lesson06_CampusScope`
-
-目录名沿用原项目，目录内只有当前 VISUAL ATLAS 版本。
+本机目录：`C:\Users\zhaoy\Documents\ChatGPT\可视化导论\Lesson06_CampusScope`
 
 ```powershell
 cd "C:\Users\zhaoy\Documents\ChatGPT\可视化导论\Lesson06_CampusScope"
 python -m http.server 8080
 ```
 
-打开 http://localhost:8080/ 。必须通过 HTTP 访问，不能直接双击 HTML 加载数据。原生 HTML/CSS/JS + 本地 D3 v7，无构建步骤。字体使用 Google Fonts，可用系统字体回退。
+打开 http://localhost:8080/ 。HTML/CSS/ES Modules + 本地 D3 v7，无构建步骤。请通过 HTTP 访问，避免 file:// 导致 CSV 加载失败。Google Fonts 为可选字体，有系统字体回退。
 
-## 课程与交互
+## 五节课堂案例
 
-- 开场：教材封面翻开，15 个不同的 D3 预览经过七种布局状态；支持重播、跳过和减少动态效果。
-- 6.1 Structure：平铺/五主题语义分组/X-Ray/可拖动的五层 3D 模型。
-- 6.2 Align：散落/松散对齐/等宽/模块网格；列辅助线、基线和 8–40px 真实间距。
-- 6.3 Compose：作品优先级与纵横比决定列跨度，信息密度影响预览高度。可选择作品并调整三级优先级。
-- 6.4 Focus：同一 keyed DOM 中放大焦点，保留其他作品为上下文；支持键盘与返回焦点。
-- 6.5 Reflow：390–1440px 画布；实际容器断点为 680/1100px，CSS 负责 4/8/12 列，D3 更新 DOM 顺序及预览细节。
-- Final：可筛选、原位聚焦、中英切换的完整展厅；包含布局骨架与数据下载。
+1. **STRUCTURE**：传统课表 → 信息页面 → X-Ray → 五层3D；结构参数默认隐藏。
+2. **POSITION**：同一11个 keyed 课程块在列表与时间网格间切换；D3 的 7天×11节与 CSS 页面列分开演示。
+3. **HIERARCHY**：整周／周四／可视化导论三种问题改变真实区域宽度和DOM顺序；FLIP保持视觉连续性。
+4. **FOCUS**：日期与课程可通过图表或文本按钮选择；全部课程保留在原时间位置；返回整周或Esc清除。
+5. **REFLOW**：320–1440px真实容器实验，预设1440/768/390、横竖屏、阅读顺序；断点680/1100px。
 
-每节含讲解、三个具体例子、关键代码、Demo 与 Takeaway。代码面板为教学精简片段；运行实现位于 js/。
+Final 默认聚焦周四，以一行摘要、当天课程、整周课表、每日课量、课程汇总组成可使用的学生信息页。手机先展示选中日，完整周课表通过按钮展开，只在图表内部横向滚动。
 
-## 数据
+顶部「中 / EN」切换完整课程、控件、作品说明和无障碍标签，不刷新页面；楼宇名称按原数据保留中文。
 
-全部为合成教学数据，不代表真实测量、人物、机构。固定种子 20260917。
+## 数据与隐私
+
+公开站点只加载一次 `data/my_week_schedule_public.csv` 与 `data/my_week_meta.json`。原始公开CSV保持不变。由D3统一计算：11次上课、5门课程、23节、5个有课日；每日和课程汇总不在图表中硬编码。
+
+`data/my_week_schedule_exact.csv` 是用户提供的本地精确版，已加入 `.gitignore`，不提交或加载到公开页面。不要对本地目录做绕过 Git 的全目录上传。若需本地精确演示，可在个人副本中切换CSV，并把 `location_exact` 映射到视图使用的 `location`。
+
+仅使用第1–11节，不推断钟点。英文课程名是展示翻译，不声称是官方英文名。
 
 ```powershell
-node scripts/validate-visual-atlas-data.js
-# All VISUAL ATLAS data checks passed.
+node scripts/validate-my-week-data.js
+# All MY WEEK timetable checks passed.
 ```
 
-`generate-visual-atlas-data.cjs` 可复现六份数据。15 件作品每课三件；实体30行、层次21节点、标量30行、点60行、时间序列144行。CVD 预览为配色与冗余编码比较，不是色觉缺陷模拟；Curve 展示已知生成模型与噪声观测；Storyline 是五轨迹构图示意，不是真实人物共现研究。
+## 源码
 
-## 文件组织
+- `js/week-data.js`：一次加载、UTC日历、课程色与D3派生汇总。
+- `js/week-views.js`：共享页面区域、问题驱动构图、FLIP、响应式与焦点状态。
+- `js/week-charts.js`：D3时间位置、keyed11课程块、两个条形汇总。
+- `js/week-main.js`：课程、真实源码区域提取、导航、控件与最终页。
+- `js/week-content.js`：每节三个真实课表示例，完整中英讲解。
+- `js/week-state.js`：复用的双语框架与DOM辅助函数。
+- `js/week-opening.js`：同一个 WeekView 的六阶段开场，支持取消、重播、跳过与减少动态效果。
+- `css/week-base.css`：复用的基础课程样式；`course-reference.css`：80人版课程外观映射；`week.css`：课表页面布局；其余两份样式负责图表和开场。
 
-- `index.html`：唯一页面入口。
-- `css/atlas.css`、`atlas-opening.css`：编辑式视觉系统、容器查询、开场布局。
-- `js/atlas-main.js`：五节课程及控件。
-- `js/atlas-gallery.js`：共享 keyed Data Join、CSS span、FLIP、筛选、焦点、ResizeObserver。
-- `js/atlas-content.js`：完整中英教学文本。
-- `js/atlas-state.js`：即时语言状态。
-- `js/preview-renderers.js`：15 种独立 D3 预览，三档细节。
-- `js/atlas-opening.js`：可取消/重播的开场。
-- `data/`：当前作品与教学微数据；`assets/`：用户提供的教材封面；`vendor/`：本地 D3 与许可证。
+代码Tab从实际运行源码的 `snippet` 区域读取，不维护另外一份示例代码。精简上下文课表仍显示完整七天，移动端详细课表保留可读宽度并局部滚动。
 
-## 历史版本
+## 历史与清理
 
-CampusScope 最终版保存在 Git 标签 `campusscope-final`，对应提交 `079dede`。旧页面资源已移入本机回收站，发布目录中不保留旧版入口或学生数据。
-
-课程章节结构参考 https://cinger007.github.io/vis/ 。15 个微型可视化均为本项目重新制作，未复制教师页面截图或源码。
+- `campusscope-final`：80名学生版本，作为本次布局参考。
+- `visual-atlas-final`：上一个已发布版本。
+- 当前开发前的MY WEEK初稿已保存在工作区 `.sites-runtime/backups/`，不属于发布目录。
+- 旧版活动资源已移入回收站；公开目录只包含当前页面所需资源。

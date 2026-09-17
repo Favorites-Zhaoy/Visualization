@@ -1,0 +1,20 @@
+{
+  "project": "MY WEEK",
+  "title_zh": "我的大学一周",
+  "title_en": "My University Week",
+  "academic_year": "2026-2027",
+  "term_zh": "秋季",
+  "term_en": "Fall",
+  "week_number": 2,
+  "week_start": "2026-09-13",
+  "week_end": "2026-09-19",
+  "default_focus_date": "2026-09-17",
+  "periods_per_day": 11,
+  "course_count_expected": 5,
+  "session_count_expected": 11,
+  "period_count_expected": 23,
+  "source_note_zh": "课程与节次依据用户提供的课表截图转录。未推断具体上课钟点。英文课程名为页面展示用翻译，非官方英文课程名。",
+  "source_note_en": "Courses and period numbers were transcribed from the user-provided timetable screenshot. Exact clock times were not inferred. English course names are display translations, not official course titles.",
+  "privacy_note_zh": "公开部署建议加载 my_week_schedule_public.csv；精确版包含具体教室门牌号，不建议提交到公开仓库，除非你明确希望公开。",
+  "privacy_note_en": "For a public deployment, load my_week_schedule_public.csv. The exact file contains room numbers and should not be committed publicly unless you intentionally want them public."
+}

@@ -1,0 +1,12 @@
+﻿session_id,date,weekday_index,weekday_zh,weekday_en,period_start,period_end,period_label,course_id,course_zh,course_en,location,source
+S001,2026-09-14,1,一,Mon,1,2,第1-2节,OS,操作系统,Operating Systems,西廊,user_timetable_image_public
+S002,2026-09-14,1,一,Mon,8,9,第8-9节,NET,计算机网络原理,Principles of Computer Networks,南教,user_timetable_image_public
+S003,2026-09-15,2,二,Tue,1,2,第1-2节,CI,计算智能,Computational Intelligence,南教,user_timetable_image_public
+S004,2026-09-16,3,三,Wed,1,2,第1-2节,OS,操作系统,Operating Systems,西廊,user_timetable_image_public
+S005,2026-09-16,3,三,Wed,6,7,第6-7节,VIS,可视化导论,Introduction to Visualization,南教,user_timetable_image_public
+S006,2026-09-16,3,三,Wed,8,9,第8-9节,NET,计算机网络原理,Principles of Computer Networks,南教,user_timetable_image_public
+S007,2026-09-17,4,四,Thu,1,2,第1-2节,CI,计算智能,Computational Intelligence,南教,user_timetable_image_public
+S008,2026-09-17,4,四,Thu,3,4,第3-4节,VIS,可视化导论,Introduction to Visualization,南教,user_timetable_image_public
+S009,2026-09-17,4,四,Thu,6,7,第6-7节,CV,计算机视觉,Computer Vision,南教,user_timetable_image_public
+S010,2026-09-18,5,五,Fri,1,2,第1-2节,CI,计算智能,Computational Intelligence,微,user_timetable_image_public
+S011,2026-09-18,5,五,Fri,3,5,第3-5节,VIS,可视化导论,Introduction to Visualization,微,user_timetable_image_public
